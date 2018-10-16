@@ -3,8 +3,8 @@ layout: post
 title:  "Cucumber Testing in Java"
 date:   2018-10-09 13:27:12 -0400
 published: true
-categories: "Programming"
-tags: "Cucumber"
+categories: ['Programming']
+tags: ['Cucumber', 'Java']
 ---
 Use Cucumber + JUint and Behavior Driven Development
 

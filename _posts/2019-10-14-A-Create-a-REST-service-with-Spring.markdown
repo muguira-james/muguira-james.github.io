@@ -3,8 +3,8 @@ layout: post
 title:  "Create a REST service with Spring"
 date:   2018-10-14 13:27:12 -0400
 published: true
-categories: "Programming"
-tags: "REST"
+categories: ['Programming']
+tags: ['REST', 'Java']
 ---
 Create  REST service using Spring Boot and our Graph ADT
 

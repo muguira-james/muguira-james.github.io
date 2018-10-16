@@ -2,7 +2,8 @@
 layout: post
 title:  "Design Thinking throught the cognitive lens of Insight Research"
 date:   2017-11-28 13:27:12 -0400
-categories: jekyll update design
+categories: ['Design']
+tags: ['Design', 'Insight']
 ---
 
 Design thinking and how it enables insight

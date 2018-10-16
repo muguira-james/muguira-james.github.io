@@ -3,8 +3,8 @@ layout: post
 title:  "JUnit Testing in java"
 date:   2018-10-06 13:27:12 -0400
 published: true
-categories: "Programming"
-tags: "Java"
+categories: ['Programming']
+tags: ['Java']
 ---
 
 Using JUint 5 and JDK 8

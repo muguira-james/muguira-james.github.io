@@ -3,8 +3,8 @@ layout: post
 title:  "Why are containers important"
 date:   2017-11-28 13:27:12 -0400
 published: true
-categories: "Containers"
-tags: "Containers"
+categories: ['Containers']
+tags: ['Containers']
 ---
 
 Explain micro-services and containers

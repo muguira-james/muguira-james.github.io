@@ -3,8 +3,8 @@ layout: post
 title:  "Creating a basic React map app with Leaflet"
 date:   2018-09-22 16:27:12 -0400
 published: true
-categories: "Programming"
-tags: "Java"
+categories: ['Programming']
+tags: ['Java']
 ---
 
 Use OpenStreetMap, Leaflet and ReactJS

@@ -3,8 +3,8 @@ layout: post
 title:  "SMACIT impacts on business"
 date:   2018-01-03 19:27:12 -0400
 published: true
-categories: "Design"
-tags: "mobile"
+categories: ['Design']
+tags: ['Mobile']
 ---
 
 ![SMACIT.png](/assets/SMACIT.png)

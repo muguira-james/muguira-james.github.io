@@ -3,8 +3,8 @@ layout: post
 title:  "Design Thinking and Agile Methodologies"
 date:   2015-10-15 13:27:12 -0400
 published: true
-categories: "Design"
-tags: "Java"
+categories: ['Design']
+tags: ['Java']
 ---
 
 How Design thinking compliments Agile
