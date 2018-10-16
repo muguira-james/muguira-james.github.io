@@ -7,6 +7,8 @@ categories: "Programming"
 tags: "Java"
 ---
 
+Use OpenStreetMap, Leaflet and ReactJS
+
 Google and Bing are not the only way to create beautiful map applications!  This post will employ OpenStreetMap and Leaflet in a React based application.  The advantage of this approach is NO license issues.  Granted Google is very liberal about the number of map loads (something around 100,000) before they start charging. But why worry?  The full source code for the project can be found on github ( [link to github]( https://github.com/muguira-james/toysoldiergolf
 )
 

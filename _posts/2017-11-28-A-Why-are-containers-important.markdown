@@ -7,6 +7,8 @@ categories: "Containers"
 tags: "Containers"
 ---
 
+Explain micro-services and containers
+
 Why all of the hype surrounding containers as a means to deliver valuable services to an enterprise customer? Reading the technologies news to date, you often stumble upon an article dealing with containers. This article will break down what containers are and why senior managers and CIO’s need to have a high-level understanding of their benefits.
 
 For years now technology companies have been selling systems that solve technology problems like relational data models, enterprise service bus systems, service oriented architecture and a long list of technology building blocks. These technology building blocks produce a disconnect between the service the organization Is striving to deliver and the components used to organize the data boundaries and data integration for the service.

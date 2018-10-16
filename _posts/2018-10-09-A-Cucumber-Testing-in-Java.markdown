@@ -6,6 +6,8 @@ published: true
 categories: "Programming"
 tags: "Cucumber"
 ---
+Use Cucumber + JUint and Behavior Driven Development
+
 ## Introduction
 
 Let’s continue with our testing exercise.  The last post described how to add unit test cases to a java class.  It used the various tools and annotations available in JUnit 5.0 to validate the behavior of the java class at a very low level.  This project is going to change it up and work with higher-level test concepts. We are going to be working in Behavior Driven Development (BDD) and creating Feature Files in the Gherkin testing language.

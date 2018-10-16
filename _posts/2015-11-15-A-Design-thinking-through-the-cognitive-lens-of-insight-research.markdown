@@ -5,6 +5,8 @@ date:   2017-11-28 13:27:12 -0400
 categories: jekyll update design
 ---
 
+Design thinking and how it enables insight
+
 Have you ever been working on a problem and found that you are completely stuck?  You may change tasks for the moment and do something else.  Then, after some time, a thought occurs and you see the solution to your problem.  Its an ’Ah’ moment when the answer jumps into your mind.  Many times it seems the act of moving to a new task or taking a break from the problem allows your mind to sort through everything and gain insight.   There has been a lot of research into insight.  Several theories have been brought forward that focus on this idea of thinking about something else as a stimulant to problem solving.
 
  This essay will examine design thinking through research into insight.  My purpose is to link design thinking processes to current cognitive research into insight and to show how theories into insight explain design thinking’s success.
