@@ -14,7 +14,7 @@ The programming pages are studies.  Thus, they are small projects I use to learn
 
 The Design pages are my thoughts on my reading into and about Design
 
-The pages are containers are thoughts on micro services
+Containers are thoughts on micro services
 
 ### Contact me
 
