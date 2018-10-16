@@ -2,7 +2,7 @@
  layout: page
  title: Post by Category
  permalink: /categoryview/
- sitemap: false
+ sitemap: true
  ---
 <div>
     {% assign categories = site.categories | sort %}
