@@ -7,6 +7,8 @@ categories: "Design"
 tags: "Java"
 ---
 
+How Design thinking compliments Agile
+
 There are two tidal waves of change breaking upon the business world today: Design Thinking and Agile methods. Herbert Simon’s 1962 publication of The Science of the Artificial exposed the world to design as a way of thinking.  However, utilizing the methods of design for managing a business customer engagement is relatively new.  The Agile Manifesto was written in 2001 when a group of software engineers came together to improve the software development process.  Since then, Agile methods have spread across the business landscape. Like Design Thinking, the Agile movement prioritizes people and interaction in creating systems.  Placing people’s interaction and collaboration ahead of schedule and process is the intersection that links both of these waves of change in organizations.
 
 At the end of the day, both paradigms strive to expose and deliver value.  This essay compares the two paradigms and shows how they overlap.  Understanding this overlap can aid project business leaders as they strive to deliver quality products in dynamic business environments.
