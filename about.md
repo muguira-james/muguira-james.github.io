@@ -4,12 +4,18 @@ title: About
 permalink: /about/
 ---
 
-Some information about you!
+Welcome!
 
-### More Information
+### What is this?
 
-A place to include any other types of information that you'd like to include about yourself.
+These pages capture my thoughts on various topics.  
+
+The programming pages are studies.  Thus, they are small projects I use to learn new topics.
+
+The Design pages are my thoughts on my reading into and about Design
+
+The pages are containers are thoughts on micro services
 
 ### Contact me
 
-[email@domain.com](mailto:email@domain.com)
+[james.muguira@comcast.net](mailto:james.muguira@comcast.net)
