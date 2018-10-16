@@ -16,6 +16,3 @@ The Design pages are my thoughts on my reading into and about Design
 
 Containers are thoughts on micro services
 
-### Contact me
-
-[james.muguira@comcast.net](mailto:james.muguira@comcast.net)
