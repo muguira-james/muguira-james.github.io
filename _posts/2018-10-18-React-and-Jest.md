@@ -2,7 +2,7 @@
 layout: post
 title:  "Consuming a REST service with React and testing with Jest"
 date:   2018-10-18 13:27:12 -0400
-published: true
+published: false
 categories: ['Programming']
 tags: ['React', 'Jest']
 ---
@@ -66,7 +66,16 @@ At a high level, the above handles testing.  The other aspect of the application
 
 + mount & get data -> render
 
-We are going to take advantage of React's lifecycle methods.  When the app mounts or creates itself and attaches to the DOM, we'll use fetch to get our data.  One thing to note is that React is very fast. A simple app like this can easily and render before the data is ready. Let's see that in action.  Here is a definition of our app that does not handle thing properly.
+We are going to take advantage of React's lifecycle methods.  When the app mounts or creates itself and attaches to the DOM, we'll use fetch to get our data.  
+
+## Testing with Jest
+
+
+We have the server we wrote from before and we have a few tests. The create-react-app comes pre-wired with Jest setup.  If you are running the app we issue: "npm start".  If you want to test you issue: "npm test".
+
+### React is fast!
+
+One thing to note is that React is very fast. A simple app like this can easily and render before the data is ready. Let's see that in action.  First, turn off the server if you have it running.  Here is a definition of our app that does not handle thing properly.  Do an "npm start"
 
 {% highlight ruby linenos %}
 
@@ -105,6 +114,8 @@ class App extends Component {
 
 export default App;
 {% endhighlight %}
+
+In this state, before the fetch can complete, React has tried to render the graph.  The app fails because there is no data associated with "this.state.graph".  Once we uncomment lines 23-25 the app does not fail.  But since we did not start the server the app simply displays "nothing here yet".
 
 
 
