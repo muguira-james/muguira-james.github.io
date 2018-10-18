@@ -1,3 +1,11 @@
+---
+layout: post
+title:  "Consuming a REST service with React and testing with Jest"
+date:   2018-10-18 13:27:12 -0400
+published: true
+categories: ['Programming']
+tags: ['React', 'Jest']
+---
 An example of how to consume a REST service and test the page with Jest
 
 # Introduction
