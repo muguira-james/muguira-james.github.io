@@ -28,7 +28,7 @@ public class Vertex {
 
 The code for an edge looks like this:
 
-{% hightlight ruby %}
+{% highlight ruby %}
 
 
 public class Edge {
@@ -58,5 +58,45 @@ At a high level, the above handles testing.  The other aspect of the application
 
 + mount & get data -> render
 
-We are going to take advantage of React's lifecycle methods.  When the app mounts or creates itself and attaches to the DOM, we'll use fetch to get our data.  One thing to note is that React is very fast. A simple app like this can easily and render before the data is ready.
+We are going to take advantage of React's lifecycle methods.  When the app mounts or creates itself and attaches to the DOM, we'll use fetch to get our data.  One thing to note is that React is very fast. A simple app like this can easily and render before the data is ready. Let's see that in action.  Here is a definition of our app that does not handle thing properly.
+
+{% highlight ruby linenos %}
+
+class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { graph: null, }
+  }
+
+  // use javascript fetch to get the graph from the server
+  componentDidMount() {
+    let url = 'http://localhost:8080/getQwestTest'
+
+    // just fetch, no error handling here!
+    // when the fetch completes, put the graph in "state"
+    fetch(url)
+      .then(response => response.json())
+      .then((resp) => {
+        console.log("g->", resp.graph)
+        this.setState({ graph: resp.graph })
+      })
+
+  }
+  render() {
+
+    // if (this.state.graph === null) {
+    //   return (<p>nothing here yet</p>)
+    // }
+    return (
+      <div>
+        <ShowGraph graph={this.state.graph} />
+      </div>
+    );
+  }
+}
+
+export default App;
+{% endhighlight %}
+
+
 
