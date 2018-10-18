@@ -40,7 +40,7 @@ public class Edge {
     ...
 }
 
-{% endhightlight %}
+{% endhighlight %}
 
 The thing to notice from the above data structures for this article is how the graph represents information stored in it.  Calling the REST service would give us a graph, which is a set of Vertex objects and a set of Edge objects.
 
