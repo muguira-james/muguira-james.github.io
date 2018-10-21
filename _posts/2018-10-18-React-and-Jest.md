@@ -133,7 +133,7 @@ In this state, before the fetch can complete, React has tried to render the grap
 
 This first test shows that the app handles problems gracefully. What does this look like in Jest?  Jest testing is almost another programming language.  We write a file full of tests.  In this case the first test is does the app render without failing.  It looks like:
 
-{% highligh ruby %}
+{% highlight ruby %}
 
 
 describe("Graph Tests", () => {
