@@ -147,7 +147,7 @@ describe("Graph Tests", () => {
 
 Jest uses a "Describe() test(), ..., test()" structure.  You describe in a high level way what is tested and the fillin individual tests.  The above code creates a DOM div element and tries to render the app on that div.  If it renders with error the test passes.  The next test is more involved: we define a small graph with a vertex named "Olivia" and a single relationship between Olivia and Tom. The test checks to make sure the output DOM contains a single node of class of graph-vertex.
 
-{% highligh ruby %}
+{% highlight ruby %}
 
   test('renders a graph vertex', () => {
     const g = { Olivia: [{ beginning: { name: "Olivia", id: 1 }, end: { name: 'Tom', id: 2}}]}
@@ -158,12 +158,12 @@ Jest uses a "Describe() test(), ..., test()" structure.  You describe in a high 
     expect((t.children()).length).toBe(1)
   });
 
-  {% endhighligh %}
+  {% endhighlight %}
 
 
 The last test is to render an adjacency list.  We create the list, use Jest mount to render the ShowAdjacent component and test to see if we have the proper class name and text.
 
-{% highligh ruby %}
+{% highlight ruby %}
 
   test('render adjacent', () => {
     let graph = [ { beginning: {name: 'Olivia' }, end: {name: 'Ben'}}, ] 
@@ -175,13 +175,13 @@ The last test is to render an adjacency list.  We create the list, use Jest moun
     expect(t.text()).toBe('Ben')
   })
 
- {% endhighligh %}
+ {% endhighlight %}
 
 If the DOM contains the correct elements after the "mount" the test passes.  
 
 To use Jest, instead of starting your app with "npm start" you use "npm test".  The React app create-react-app included the required functionality into you environment for you.  Your package.json file includes a scripts section with a "test" section that runs "react-scripts test".  Issuing a "npm test" command at the command prompt will generate the following output: 
 
-{% highligh ruby %}
+{% highlight ruby %}
   RUNS  src/App.test.js
 
 Test Suites: 0 of 1 total
