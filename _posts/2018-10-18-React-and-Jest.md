@@ -143,7 +143,7 @@ describe("Graph Tests", () => {
     ReactDOM.unmountComponentAtNode(div);
   });
 
-{% endhighligh %}
+{% endhighlight %}
 
 Jest uses a "Describe() test(), ..., test()" structure.  You describe in a high level way what is tested and the fillin individual tests.  The above code creates a DOM div element and tries to render the app on that div.  If it renders with error the test passes.  The next test is more involved: we define a small graph with a vertex named "Olivia" and a single relationship between Olivia and Tom. The test checks to make sure the output DOM contains a single node of class of graph-vertex.
 
