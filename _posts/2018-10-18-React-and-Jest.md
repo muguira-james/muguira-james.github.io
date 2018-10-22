@@ -89,7 +89,7 @@ We import required libraries, configure the right adaptor and export or make sev
 
 ### React is fast!
 
-One thing to note is that React is very fast. A simple app like this can easily and render before the data is ready. Let's see that in action.  First, turn off the server if you have it running.  Here is a definition of our app that does not handle thing properly.  Do an "npm start"
+One thing to note is that React is very fast. A simple app like this can easily render before the data is ready. Let's see that in action.  First, turn off the server if you have it running.  Here is a definition of our app that does not handle thing properly.  Do an "npm start"
 
 {% highlight ruby linenos %}
 
