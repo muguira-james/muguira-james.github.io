@@ -89,7 +89,7 @@ We import required libraries, configure the right adaptor and export or make sev
 
 ### React is fast!
 
-One thing to note is that React is very fast. A simple app like this can easily render before the data is ready. Let's see that in action.  First, turn off the server if you have it running.  Here is a definition of our app that does not handle thing properly.  Do an "npm start"
+One thing to note is that React is very fast. A simple app like this can easily render before the data is ready. Let's see that in action.  First, turn off the server if you have it running.  Here is a definition of our app that does not handle things properly.  Do an "npm start"
 
 {% highlight ruby linenos %}
 
@@ -145,7 +145,7 @@ describe("Graph Tests", () => {
 
 {% endhighlight %}
 
-Jest uses a "Describe() test(), ..., test()" structure.  You describe in a high level way what is tested and the fillin individual tests.  The above code creates a DOM div element and tries to render the app on that div.  If it renders with error the test passes.  The next test is more involved: we define a small graph with a vertex named "Olivia" and a single relationship between Olivia and Tom. The test checks to make sure the output DOM contains a single node of class of graph-vertex.
+Jest uses a "Describe() test(), ..., test()" structure.  You describe in a high level way what is tested and then fill in individual tests.  The above code creates a DOM div element and tries to render the app on that div.  If it renders with error the test passes.  The next test is more involved: we define a small graph with a vertex named "Olivia" and a single relationship between Olivia and Tom. The test checks to make sure the output DOM contains a single node of class of graph-vertex.
 
 {% highlight ruby %}
 
