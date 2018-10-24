@@ -132,7 +132,47 @@ We have created and run some stories for testing the Adjacency list.  Let's test
 + an adjacency list with several entries
 + a graph with several vertex entries
 
+{% highlight ruby %}
+import React from 'react';
+import { storiesOf } from '@storybook/react';
 
+import ShowGraph from './ShowGraph'
 
+// const g = { Olivia: [{ beginning: { name: "Olivia", id: 1 }, end: { name: 'Tom', id: 2}}]}
+export const graph = {
+    Olivia: [ { beginning: { name: "Jasper", id: 0 }, end: { name: 'Tom', id: 1 } } ]
+}
 
+export const longer_adjacent = {
+    Olivia: [
+        { beginning: { name: "Jasper", id: 0 }, end: { name: 'Tom', id: 1 } },
+        { beginning: { name: "Olivia", id: 0 }, end: { name: 'Charlie', id: 1 } },
+    ]
+}
 
+export const longer_graph = {
+    Olivia: [
+        { beginning: { name: "Jasper", id: 0 }, end: { name: 'Tom', id: 1 } },
+        { beginning: { name: "Olivia", id: 0 }, end: { name: 'Charlie', id: 1 } },
+    ],
+    Tom: [
+        { beginning: { name: "Tom", id: 0 }, end: { name: 'Ben', id: 1 } },
+        { beginning: { name: "Olivia", id: 0 }, end: { name: 'Emma', id: 1 } },
+    ]
+}
+
+export const empty_graph = {}
+
+storiesOf('ShowGraph', module)
+    .add('default', () => <ShowGraph graph={graph} />)
+    .add('empty_graph', () => <ShowGraph graph={empty_graph} />)
+    .add('longer_adjacent', () => <ShowGraph graph={longer_adjacent} />)
+    .add('longer_graph', () => <ShowGraph graph={longer_graph} />)
+    
+{% endhighlight %}
+
+In each case, we call our ShowGraph component with the test data.  This paradym presents a visual way to check to see if your component will pass basic sanity checks.  More intense development environments would require continous integration and continous deploy (CI/CD).  That is out of scope for this article. We are going to stay with visual testing. 
+
+# Conclusion
+
+We used Storybook as a visual way to create and test a set of React JS components. Storybook runs in the browser and presents different stories of how the UI components should behave given supplied test data.  Like Jest, Storybook can mount each component in isolation so you can focus your coding and testing.  The big difference is that Storybook is a visual tool: you see what the component looks like as you create your tests.  This article just touched the surface of what Storybook can do.  I encourage you to head to their website and explore further.
