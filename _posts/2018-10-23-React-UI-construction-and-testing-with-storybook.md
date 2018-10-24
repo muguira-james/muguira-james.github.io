@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "React UI construction and testing with Storyboook"
-date:   2018-10-124 13:27:12 -0400
+date:   2018-10-24 13:27:12 -0400
 published: true
 categories: ['Programming']
 tags: ['React', 'Javascript']
