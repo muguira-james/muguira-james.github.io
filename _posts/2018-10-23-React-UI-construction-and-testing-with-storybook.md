@@ -17,7 +17,7 @@ This caused me to search around in the React eco-system looking for a better too
 
 ## Setup
 
-Storybook is very easy to setup.  I will recommend 2 sites: the Storybook !(storybookjs.org)[https://storybook.js.org/] for how to install it; and !(learn storybook)[https://www.learnstorybook.com/react/en/get-started/] as a good tutorial.  This article will build on the "learn Storybook" material to build our graph adt consumer.  The original graph consumer and visualizer was very simple: it shows the graph as text with relationships show as indentions. This post will expand that a little to demo more of Storybook's features.  I am not going too deeply into what Storybook can do.  
+Storybook is very easy to setup.  I will recommend 2 sites: the Storybook ![storybookjs.org](https://storybook.js.org/) for how to install it; and ![learn storybook](https://www.learnstorybook.com/react/en/get-started/) as a good tutorial.  This article will build on the "learn Storybook" material to build our graph adt consumer.  The original graph consumer and visualizer was very simple: it shows the graph as text with relationships show as indentions. This post will expand that a little to demo more of Storybook's features.  I am not going too deeply into what Storybook can do.  
 
 Our previous article started by describing the Vertex and Edge data structures.  Vertex are used to hold information about entities in our system.  Things like the name, strength of a player and a list of what they were carrying.  Edges represent the relationships between the players.  In our example, relationships were one directional. The previous article then described the tests.  This is where this article will differ.  Let's use Storybook to build the UI from the bottom up.
 
@@ -25,7 +25,7 @@ Our previous article started by describing the Vertex and Edge data structures. 
 
 The lowest level aspect of the UI is to display a single relationsip, a graph Edge.  A Graph Edge is an Object with a beginning and an end vertex.  A vertex is composed of a name, a strength (we'll not worry about the list of carried items for now).  Let's start by displaying the "end" of the relationship, the name.  In the Storybook UI, this would look like: 
 
-!(ShowAdjacent default view)[/assets/ShowAdjacent_default.png]
+![ShowAdjacent default view](/assets/ShowAdjacent_default.png)
 
 Not too interesting, just the name "Tom".  The Storybook interface contains several components: on the left is a nav panel showing each of the "stories" in your project, on the right is a visual of the UI in test and in the lower right is the log.  In Storybook, you code stories for each test of your UI. Our first story is to simply show the UI.  Storybook setup specifies that you create a __stories__ sub dir under your src dir.  I'm going to follow the Jest convention and name my story files like this: "ShowAdjacent.stories.js" and place them in the same dir as the file under test.  This implies we have to change Storybook's default config a little.  When we loaded storybook into our environment (with npm i @storybook/cli and then ran getstorybook) it created a directory called .storybook.  This dir contains a config file.  Here is mine after I changed it:
 
