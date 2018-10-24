@@ -11,7 +11,7 @@ Creating and testing a UI should be visual.
 
 # Introduction
 
-In a previous article, I wrote about employing Jest and BDD to test a UI.  Jest is a powerful tool with a lot of primitives to structure UI testing.  However, it is not very intuitive.  Let alone trying to use behavior driven development to develop the UI.
+In a previous article, I wrote about employing Jest and BDD to test a UI.  Jest is a powerful tool with a lot of primitives to structure UI testing.  However, it is not very intuitive. 
 
 This caused me to search around in the React eco-system looking for a better tool.  I wanted to be able to see what I was building and develop the tests as I go.  Storybook is a very nice tool. It is NOT a visual construction framework.  It IS a visual way to structure tests. Let's take the React app we wrote for the Graph ADT and rebuild it using Storybook.
 
@@ -138,7 +138,6 @@ import { storiesOf } from '@storybook/react';
 
 import ShowGraph from './ShowGraph'
 
-// const g = { Olivia: [{ beginning: { name: "Olivia", id: 1 }, end: { name: 'Tom', id: 2}}]}
 export const graph = {
     Olivia: [ { beginning: { name: "Jasper", id: 0 }, end: { name: 'Tom', id: 1 } } ]
 }
