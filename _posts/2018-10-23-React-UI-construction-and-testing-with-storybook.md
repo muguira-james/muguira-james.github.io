@@ -39,7 +39,7 @@ function loadStories() {
 }
 
 configure(loadStories, module);
-{ endhighlight %}
+{% endhighlight %}
 
 The second line tells storybook to look in my src dir for files that fit the pattern "*.stories.js" and use those. My first stories file (ShowAdjacent.stories.js) looks like this:
 
