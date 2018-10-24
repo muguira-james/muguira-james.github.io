@@ -19,8 +19,8 @@ This caused me to search around in the React eco-system looking for a better too
 
 Storybook is very easy to setup.  I will recommend 2 sites: the Storybook 
 
-+ ![storybookjs.org]( https://storybook.js.org/ ) for how to install it; and 
-+ ![learn storybook]( https://www.learnstorybook.com/react/en/get-started/ ) as a good tutorial.  
++ ![ storybookjs.org ]( https://storybook.js.org/ ) for how to install it; and 
++ ![ learn storybook ]( https://www.learnstorybook.com/react/en/get-started/ ) as a good tutorial.  
 
 This article will build on the "learn Storybook" material to build our graph adt consumer.  The original graph consumer and visualizer was very simple: it shows the graph as text with relationships show as indentions. This post will expand that a little to demo more of Storybook's features.  I am not going too deeply into what Storybook can do.  
 
@@ -125,7 +125,14 @@ storiesOf('ShowAdjacent test', module)
 
 # Testing the Graph
 
-We have created and run some stories for testing the Adjacency list.  Let's test the next component up, the graph.  
+We have created and run some stories for testing the Adjacency list.  Let's test the next component up, the graph.  The graph stories file follows the same pattern: import the files you need, setup some data, define the tests.  In our case, we'll run 4 tests: 
+
++ a default graph
++ an empty graph
++ an adjacency list with several entries
++ a graph with several vertex entries
+
+
 
 
 
