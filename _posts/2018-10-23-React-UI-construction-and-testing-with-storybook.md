@@ -94,6 +94,7 @@ storiesOf('ShowAdjacent test', module)
 In this case, the app should not crash, yet it does! The problem is that the ShowAdjacent component does not handle the case of badly formed adjacency lists. We'll have to refactor the code. The refactor is straight forward, we check to see if there is a name before we try and return the list item. Another test we should try here is to make sure the app gracefully handles no adjacency list. I'll just show the data and the story case:
 
 {% highlight ruby %}
+
 export const empty_adjacentList = []
 
 export const empty_name = [
