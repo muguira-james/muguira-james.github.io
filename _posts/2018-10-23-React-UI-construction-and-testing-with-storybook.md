@@ -17,7 +17,12 @@ This caused me to search around in the React eco-system looking for a better too
 
 ## Setup
 
-Storybook is very easy to setup.  I will recommend 2 sites: the Storybook ![storybookjs.org](https://storybook.js.org/) for how to install it; and ![learn storybook](https://www.learnstorybook.com/react/en/get-started/) as a good tutorial.  This article will build on the "learn Storybook" material to build our graph adt consumer.  The original graph consumer and visualizer was very simple: it shows the graph as text with relationships show as indentions. This post will expand that a little to demo more of Storybook's features.  I am not going too deeply into what Storybook can do.  
+Storybook is very easy to setup.  I will recommend 2 sites: the Storybook 
+
++ ![storybookjs.org](https://storybook.js.org/) for how to install it; and 
++ ![learn storybook](https://www.learnstorybook.com/react/en/get-started/) as a good tutorial.  
+
+This article will build on the "learn Storybook" material to build our graph adt consumer.  The original graph consumer and visualizer was very simple: it shows the graph as text with relationships show as indentions. This post will expand that a little to demo more of Storybook's features.  I am not going too deeply into what Storybook can do.  
 
 Our previous article started by describing the Vertex and Edge data structures.  Vertex are used to hold information about entities in our system.  Things like the name, strength of a player and a list of what they were carrying.  Edges represent the relationships between the players.  In our example, relationships were one directional. The previous article then described the tests.  This is where this article will differ.  Let's use Storybook to build the UI from the bottom up.
 
