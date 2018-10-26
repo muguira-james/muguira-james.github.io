@@ -39,7 +39,7 @@ app.get('/', (request, response) => {
 app.listen(3000, () => {
     console.log(' app listening on port 3000')
 })
-{% endhiglight %}
+{% endhighlight %}
 
 The first 2 lines pull in express (after you install it with npm install express -g) and create a variable to hold the reference.  The statement "app.get" sets up a route or a way to translate the url into something the server can return to the caller.  In this case, we simply return "hello world" as a string.  Express handles all setting of the headers.  We'll do more with that in a bit. The last statement ("app.listen") starts the server and waits on input from localhost port 3000.  If you point your server to localhost:3000 you should get "hello world" back.
 
@@ -66,7 +66,7 @@ app.get('/', (request, response) => {
 app.listen(3000, () => {
     console.log(' app listening on port 3000')
 })
-{% endhiglight %}
+{% endhighlight %}
 
 After we copy all of our bundled ReactJS app, from the build directoyr into "public" our directoy structure for the project looks like this:
 
