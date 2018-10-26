@@ -1,12 +1,11 @@
 ---
 layout: post
-title:  "React UI construction and testing with Storyboook"
-date:   2018-10-24 13:27:12 -0400
+title:  "React UI construction and testing with Storybook"
+date:   2018-10-14 13:27:12 -0400
 published: true
 categories: ['Programming']
 tags: ['React', 'Javascript']
 ---
-
 Creating and testing a UI should be visual.
 
 # Introduction
@@ -28,7 +27,7 @@ Our previous article started by describing the Vertex and Edge data structures. 
 
 ## Testing the Adjacency List
 
-The lowest level aspect of the UI is to display a single relationsip, a graph Edge.  A Graph Edge is an Object with a beginning and an end vertex.  A vertex is composed of a name, a strength (we'll not worry about the list of carried items for now).  Let's start by displaying the "end" of the relationship, the name.  In the Storybook UI, this would look like: 
+The lowest level aspect of the UI is to display a single relationship, a graph Edge.  A Graph Edge is an Object with a beginning and an end vertex.  A vertex is composed of a name, a strength (we'll not worry about the list of carried items for now).  Let's start by displaying the "end" of the relationship, the name.  In the Storybook UI, this would look like: 
 
 ![ShowAdjacent default view](/assets/ShowAdjacent_default.png)
 
@@ -170,7 +169,7 @@ storiesOf('ShowGraph', module)
     
 {% endhighlight %}
 
-In each case, we call our ShowGraph component with the test data.  This paradym presents a visual way to check to see if your component will pass basic sanity checks.  More intense development environments would require continous integration and continous deploy (CI/CD).  That is out of scope for this article. We are going to stay with visual testing. 
+In each case, we call our ShowGraph component with the test data.  This paradigm presents a visual way to check to see if your component will pass basic sanity checks.  More intense development environments would require continuous integration and continuous deploy (CI/CD).  That is out of scope for this article. We are going to stay with visual testing. 
 
 # Conclusion
 
