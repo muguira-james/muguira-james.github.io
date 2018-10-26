@@ -12,9 +12,9 @@ Use node Express to serve a ReactJS app
 
 This article will describe how to setup node express to serve a ReactJS app.  The article has several parts: 
 
-+ Getting Node working on your computer
-+ Working your way through Express and understanding the elements we will use
-+ Using npm to generate a production version of a working ReactJS app
++ Getting a simple express server working on your computer
++ Enhancing the React App to fetch data from a server
++ Enhancing the server again to add mongodb
 
 There are many tutorials on the web that describe the process of creating a ReactJS app.  There are also numerous articles that walk through creating apps with Express. The main contrbution here will be demonstrating how to go from development to production with an existing ReactJS app.  The production version of the ReactJS app will be served by Express.
 
@@ -31,17 +31,18 @@ Using node + Express can be very simple.  Consider this 4 line program:
 {% highlight ruby %}
 var express = require('express')
 var app = express()
+var port = 9000
 
 app.get('/', (request, response) => {
     response.send("hello World")
 })
 
-app.listen(3000, () => {
-    console.log(' app listening on port 3000')
+app.listen(port, () => {
+    console.log(`app listening on port ${port}`)
 })
 {% endhighlight %}
 
-The first 2 lines pull in express (after you install it with npm install express -g) and create a variable to hold the reference.  The statement "app.get" sets up a route or a way to translate the url into something the server can return to the caller.  In this case, we simply return "hello world" as a string.  Express handles all setting of the headers.  We'll do more with that in a bit. The last statement ("app.listen") starts the server and waits on input from localhost port 3000.  If you point your server to localhost:3000 you should get "hello world" back.
+The first 2 lines pull in express (after you install it with npm install express -g) and create a variable to hold the reference.  The statement "app.get" sets up a route or a way to translate the url into something the server can return to the caller.  In this case, we simply return "hello world" as a string.  Express handles all setting of the headers.  We'll do more with that in a bit. The last statement ("app.listen") starts the server and waits on input from localhost port 9000.  If you point your server to localhost:3000 you should get "hello world" back.
 
 At this point we could create complex html pages and serve them by adding more modules to Express.  But the article goal is to serve a ReactJS app.  How to do that?
 
@@ -68,7 +69,7 @@ app.listen(3000, () => {
 })
 {% endhighlight %}
 
-After we copy all of our bundled ReactJS app, from the build directoyr into "public" our directoy structure for the project looks like this:
+After we copy all of our bundled ReactJS app, from the build directory into "public" our directoy structure for the project looks like this:
 
 {% highlight ruby %}
 asset-manifest.json	favicon.ico		index.html		manifest.json		service-worker.js	static
@@ -89,7 +90,7 @@ Hole1.813cb29b.png	...
 
 Inspecting this you can see: a css, js and media directories under public. The "npm build" command gathered up all of the javascript, our source and the modules under node_modules and put them into the "public/static/js" dir. Since the ReactJS app has several image files they are saved into "public/static/media". If we run the server and point our browser at localhost:9000/index.html we see the following:
 
-[our React App](/assets/ProdReact.png)
+![our React App](/assets/ProdReact.png)
  
 ## Our Second Server
 
