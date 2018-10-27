@@ -144,11 +144,11 @@ app.listen(9000, () => {
 })
 {% endhighlight %}
 
-Notice lines: 2, 26.  Line 2 brings in the CORS support and line 26 enables the middle-ware.  If you comment out line 26 and run the React App from its directory with npm start, you should see a failure message on the browser console log.  The reason for the failure is that the React app is being served from a server running on localhost port 3000 (by default from create-react-app) and our Express server is running on localhost port 9000.  Now uncomment line 26 in the Express server and restart it.  If you refresh the "React App" tab in your browser, you should see the map.
+Notice lines: 2, 25.  Line 2 brings in the CORS support and line 26 enables the middle-ware.  If you comment out line 25 and run the React App from its directory with npm start, you should see a failure message on the browser console log.  The reason for the failure is that the React app is being served from a server running on localhost port 3000 (by default from create-react-app) and our Express server is running on localhost port 9000.  Now uncomment line 26 in the Express server and restart it.  If you refresh the "React App" tab in your browser, you should see the map.
 
-If you consider lines 8-24 of the Express server you will see the in-memory database.  These player definitions are served to callers on line 33 of the Express server.
+If you consider lines 7-23 of the Express server you will see the in-memory database.  These player definitions are served to callers on line 33 of the Express server.
 
-What does the React App look like?  The original app had the data defined in the code.  We changed that to use javascript fetch in a React lifecycle method.  React's componentDidMount is called after the component mounts (or, is initialized and attached to the browser DOM). In our new overide of componentDidMount, we fetch our data and place it in state.
+What does the React App look like?  The original app had the data defined in the code.  We changed that to use javascript fetch in a React lifecycle method.  React's componentDidMount lifcycle method is called after the component mounts (or, is initialized and attached to the browser DOM). In our new overide of componentDidMount, we fetch our data and place it in state.
 
 {% highlight ruby %}
 import React from 'react';
