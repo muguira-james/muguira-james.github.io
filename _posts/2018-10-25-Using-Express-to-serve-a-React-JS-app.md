@@ -147,6 +147,11 @@ app.listen(9000, () => {
     console.log(`app listening on port ${port}`)
 })
 {% endhighlight %}
+
+Notice lines: 2, 26.  Line 2 brings in the CORS support and line 26 enables the middle-ware.  If you comment out line 26 and run the React App from its directory with npm start, you should see a failure message on the browser console log.  The reason for the failure is that the React app is being served from a server running on localhost port 3000 (by default from create-react-app) and our Express server is running on localhost port 9000.  Now uncomment line 26 in the Express server and restart it.  If you refresh the "React App" tab in your browser, you should see the map.
+
+If you consider lines 8-24 of the Express server you will see the in-memory database.  These player definitions are served to callers on line 33 of the Express server.
+
 ## Third Server
 
 Add MongoDB and mongoose
