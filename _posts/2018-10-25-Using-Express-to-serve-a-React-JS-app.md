@@ -104,7 +104,9 @@ The first change is to define the server API in our server for the React app.  W
 
 ### Cross Origin Support (CORS)
 
-If you look at the code for the server you will see 2 new items: CORS support and the data for the list players.  If you study the urls and ports in our application you will notice that we were careful to serve the React App from localhost on port 9000.  We were also careful to have the React App request data from localhost port 9000.  We defined a new API for the React App to get the data from: /api/players.  These definitions do not violate Cross Origin Resource Support, or CORS, rules.  A lot happens behind the scenes when a browser asks for a web page.  When a browser first asks for a web page it sends a small message to the server called a "pre-flight message".  The web server checks this message, specifically the headers, to see if the requesting host and ports match its own.  If they do the web server sends back a positive acknowledgement to the requesting client.  If not the web server hecks to see if it has had CORS enabled.  If this is true, it will send back a positive acknowledgement anyway.
+If you look at the code for the server you will see 2 new items: CORS support and the data for the list players.  If you study the urls and ports in our application you will notice that we were careful to serve the React App from localhost on port 9000.  We were also careful to have the React App request data from localhost port 9000.  We defined a new API for the React App to get the data from: /api/players.  These definitions do not violate Cross Origin Resource Support, or CORS, rules.  
+
+A lot happens behind the scenes when a browser asks for a web page.  When a browser first asks for a web page it sends a small message to the server called a "pre-flight message".  The web server checks this message, specifically the headers, to see if the requesting host and ports match its own.  If they do, the web server sends back a positive acknowledgement to the requesting client and the browser continous to load the requested page.  If not the web server checks to see if it has had CORS enabled.  If this is true, it will send back a positive acknowledgement anyway to let the browser proceed.  If CORS is not enabled the server sends back a negative acknowledgement and the browser reports the error in the console.
 
 We can test this out in our current setup.  Here is the full server code so far
 
@@ -148,7 +150,7 @@ app.listen(9000, () => {
 })
 {% endhighlight %}
 
-Notice lines: 2, 25.  Line 2 brings in the CORS support and line 26 enables the middle-ware.  If you comment out line 25 and run the React App from its directory with npm start, you should see a failure message on the browser console log.  The reason for the failure is that the React app is being served from a server running on localhost port 3000 (by default from create-react-app) and our Express server is running on localhost port 9000.  Now uncomment line 26 in the Express server and restart it.  If you refresh the "React App" tab in your browser, you should see the map.
+Notice lines: 2, 25.  Line 2 brings in the CORS support and line 25 enables the middle-ware.  If you comment out line 25 and run the React App from its original directory with npm start, you should see a failure message on the browser console log.  The reason for the failure is that the React app is being served from a server running on localhost port 3000 (by default from create-react-app) and our Express server is running on localhost port 9000.  That is a cross origin violation.  Now uncomment line 25 in the Express server and restart it.  If you refresh the "React App" tab in your browser, you should see the map.
 
 If you consider lines 7-23 of the Express server you will see the in-memory database.  These player definitions are served to callers on line 33 of the Express server.
 
