@@ -4,7 +4,7 @@ title:  "Using Express to serve a ReactJS app"
 date:   2018-10-26 13:27:12 -0400
 published: true
 categories: ['Programming']
-tags: ['Node', 'Express', 'React']
+tags: ['Node', 'Express', 'React', 'MongoDB]
 ---
 Use node Express to serve a ReactJS app
 
@@ -197,3 +197,7 @@ export default class SimpleExample extends React.Component {
 
 Add MongoDB and mongoose
 Maybe add express view Jade/pug
+
+Ok, to this point we have defined an Express server that knows how to serve both static pages, such as index.html and the images for our players.  We had to change our React app a little.  Originally, it used data defined in the app and drew its screen.  We changed this to fetch the data from our Express server.  We then used npm run build to create a production copy of the React App and placed this build in the "public" directory of our Epress server.
+
+This last section will move the data one more time.  We are going to add a mongoDB database to the mix.  When a client hits the Express server api asking for data the server will gather that data from mongo db and return it.
