@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Using Express to serve a ReactJS app"
-date:   2018-10-09 13:27:12 -0400
+date:   2018-10-26 13:27:12 -0400
 published: true
 categories: ['Programming']
 tags: ['Node', 'Express', 'React']
