@@ -10,7 +10,7 @@ Use node Express to serve a React app
 
 # Introduction
 
-This article will describe how to setup node express to serve a React app.  We will reuse the React app created for the article "Creating a basic React map with Leaflet".  The article has several parts: 
+This article will describe how to setup node express to serve a React app.  We will reuse the React app created for the article [Creating a basic React map with Leaflet](https://github.com/muguira-james/toysoldiergolf).  The article has several parts: 
 
 + Getting a simple express server working on your computer
 + Enhancing the React App to fetch data from a server
