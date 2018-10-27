@@ -14,9 +14,8 @@ This article will describe how to setup node express to serve a React app.  We w
 
 + Getting a simple express server working on your computer
 + Enhancing the React App to fetch data from a server
-+ Enhancing the server again to add mongodb
 
-There are many tutorials on the web that describe the process of creating a React app.  There are also numerous articles that walk through creating apps with Express. The main contrbution here will be demonstrating how to go from development to production with an existing React app.  The production version of the React app will be served by Express.
+There are many tutorials on the web that describe the process of creating a React app.  There are also numerous articles that walk through creating apps with Express. The main contribution here will be demonstrating how to go from development to production with an existing React app.  The production version of the React app will be served by Express.
 
 ## Setup Node and Express
 
@@ -26,7 +25,7 @@ This article will build a couple of versions of the server. I'll do this to show
 
 ## First server
 
-Using node + Express can be very simple.  Make a directory called simple_express and use "cd simple_express; npm init". then add this 4 line program as simple_press.js:
+Using node + Express can be very simple.  Make a directory called simple_express and use "cd simple_express; npm init". Then add this 4-line program as simple_press.js:
 
 {% highlight ruby %}
 var express = require('express')
@@ -48,7 +47,7 @@ At this point we could create complex html pages and serve them by adding more m
 
 A React app created from the create-react-app command provides a number of "canned" scripts.  For example, we can start the app and show it in the default browser (npm start), we start the Jest test fixture (npm test) and we can have the built-in webpack bundle together our app in a build directory.  This bundled app will have the javascript code joined into a single file (or maybe 2 files, depending on your setup - we do a directory listing down below).  It will have all of the paths setup to run from a static path and the package.json file adjusted to run from a relative url.  Thus, the app is bundled together as a static uri resource.
 
-This article will reuse the React app we wrote to use Leaflet in React [React + Leaflet](https://muguira-james.github.io/A-creating-basic-React-app-with-a-leaflet-map/). The code can be run by issuing "npm start" from the command line.  It opens port 3000 on localhost.  Fro the browser point of view, the React app is just static content.  It is html and javascript and images.  So, we want Express to treat the React app as static content when a client requests the React App. However, the React app is setup to run from the create-react-app infrastructure.  We need to convert it to a static format for serving from our Express server.  To accomplish this we use "npm run build".  That command will create a build dir and add all of the required content.  We can copy the contents of the build dir to our Express server "public".  We are going to run the build step manually, but you might want to look into Jenkins to handle it automatically.
+This article will reuse the React app we wrote to use Leaflet in React [React + Leaflet](https://muguira-james.github.io/A-creating-basic-React-app-with-a-leaflet-map/). Issuing “npm start” from the command line can run the code.  It opens port 3000 on localhost.  Fro the browser point of view, the React app is just static content.  It is html and javascript and images.  So, we want Express to treat the React app as static content when a client requests the React App. However, the React app is setup to run from the create-react-app infrastructure.  We need to convert it to a static format for serving from our Express server.  To accomplish this we use "npm run build".  That command will create a build dir and add all of the required content.  We can copy the contents of the build dir to our Express server "public".  We are going to run the build step manually, but you might want to look into Jenkins to handle it automatically.
 
 ### Setup Express for serving static content
 
@@ -106,7 +105,7 @@ The first change is to define the server API in our server for the React app.  W
 
 If you look at the code for the server you will see 2 new items: CORS support and the data for the list players.  If you study the urls and ports in our application you will notice that we were careful to serve the React App from localhost on port 9000.  We were also careful to have the React App request data from localhost port 9000.  We defined a new API for the React App to get the data from: /api/players.  These definitions do not violate Cross Origin Resource Support, or CORS, rules.  
 
-A lot happens behind the scenes when a browser asks for a web page.  When a browser first asks for a web page it sends a small message to the server called a "pre-flight message".  The web server checks this message, specifically the headers, to see if the requesting host and ports match its own.  If they do, the web server sends back a positive acknowledgement to the requesting client and the browser continous to load the requested page.  If not the web server checks to see if it has had CORS enabled.  If this is true, it will send back a positive acknowledgement anyway to let the browser proceed.  If CORS is not enabled the server sends back a negative acknowledgement and the browser reports the error in the console.
+A lot happens behind the scenes when a browser asks for a web page.  When a browser first asks for a web page it sends a small message to the server called a "pre-flight message".  The web server checks this message, specifically the headers, to see if the requesting host and ports match its own.  If they do, the web server sends back a positive acknowledgement to the requesting client and the browser continuous to load the requested page.  If not the web server checks to see if it has had CORS enabled.  If this is true, it will send back a positive acknowledgement anyway to let the browser proceed.  If CORS is not enabled the server sends back a negative acknowledgement and the browser reports the error in the console.
 
 We can test this out in our current setup.  Here is the full server code so far
 
@@ -198,8 +197,18 @@ export default class SimpleExample extends React.Component {
 }
 {% endhighlight %}
 
-## Third Server
+# Conclusion
 
-Ok, to this point we have defined an Express server that knows how to serve both static pages, such as index.html and the images for our players.  We had to change our React app a little.  Originally, it used data defined in the app and drew its screen.  We changed this to fetch the data from our Express server.  We then used npm run build to create a production copy of the React App and placed this build in the "public" directory of our Epress server.
+We reused a React app and showed how to create an Express server to serve both the React app and content.  Very little changed in the React.  We:
 
-This last section will move the data one more time.  We are going to add a mongoDB database to the mix.  When a client hits the Express server api asking for data the server will gather that data from mongo db and return it.
++ Moved the data used to draw the toy soldiers out of the app and into our Express server
++ We used javascript fetch to get data from the server
++ We used npm run build to set the React app up as static content
+
+On the server side, we:
+
++ Created a very simple server and set it up to serve static content using the built-in middle-ware "static".
++ Created a 'public' directory and copied the React app build into it
++ Created an api ("/api/players") to serve data to the React app.
+
+Express is very flexible.  It has a broad eco-system with many supported middle-ware definitions.  These can be used to create a very wide varity of web serve instances.
