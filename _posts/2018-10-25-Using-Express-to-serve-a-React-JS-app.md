@@ -94,9 +94,6 @@ Inspecting this you can see: a css, js and media directories under public. The "
  
 ## Our Second Server
 
-db setup - in memory
-Add Fetch to ReactJS
-
 We have created enough infrastructure to serve a static ReactJS app.  Express is using the static middle-ware to serve our React App. But, the data for the React app is defined in the React program.  Now, let's define it in the server and have the React App fetch it.
 
 The first change is to define the API in our server for the React app.  We can take the data out of the React app and place it in the server.  This will form a simple in-memory db.  Then we define the API using Express routes.  
@@ -151,6 +148,50 @@ app.listen(9000, () => {
 Notice lines: 2, 26.  Line 2 brings in the CORS support and line 26 enables the middle-ware.  If you comment out line 26 and run the React App from its directory with npm start, you should see a failure message on the browser console log.  The reason for the failure is that the React app is being served from a server running on localhost port 3000 (by default from create-react-app) and our Express server is running on localhost port 9000.  Now uncomment line 26 in the Express server and restart it.  If you refresh the "React App" tab in your browser, you should see the map.
 
 If you consider lines 8-24 of the Express server you will see the in-memory database.  These player definitions are served to callers on line 33 of the Express server.
+
+What does the React App look like?  The original app had the data defined in the code.  We changed that to use javascript fetch in a React lifecycle method.  React's componentDidMount is called after the component mounts (or, is initialized and attached to the browser DOM). In our new overide of componentDidMount, we fetch our data and place it in state.
+
+{% highlight ruby %}
+import React from 'react';
+
+import ShowMap from './ShowMap'
+
+var golfCourse = require('./indy.json')
+
+export default class SimpleExample extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      playerList: null,
+    }
+  }
+  // // use javascript fetch to get the graph from the server
+  componentDidMount() {
+    let url = 'http://localhost:9000/api/players'
+
+    // just fetch, no error handling here!
+    // when the fetch completes, put the graph in "state"
+    fetch(url)
+      .then(resp => { return resp.json() })
+      .then((resp) => {
+        this.setState({ playerList: resp.graph })
+      })
+
+  }
+
+  render() {
+    if (this.state.playerList !== null) {
+      return (
+        <ShowMap golfCourse={golfCourse} listOfPlayers={this.state.playerList} />
+      );
+    } else {
+      return null
+    }
+
+  }
+}
+{% endhighlight %}
 
 ## Third Server
 
