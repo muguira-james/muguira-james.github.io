@@ -90,14 +90,63 @@ Hole1.813cb29b.png	...
 
 Inspecting this you can see: a css, js and media directories under public. The "npm build" command gathered up all of the javascript, our source and the modules under node_modules and put them into the "public/static/js" dir. Since the ReactJS app has several image files they are saved into "public/static/media". If we run the server and point our browser at localhost:9000/index.html we see the following:
 
-![our React App](/assets/ProdReact.png)
+![ProdReact.png](/assets/ProdReact.png)
  
 ## Our Second Server
 
-Talk about CORS
 db setup - in memory
 Add Fetch to ReactJS
 
+We have created enough infrastructure to serve a static ReactJS app.  Express is using the static middle-ware to serve our React App. But, the data for the React app is defined in the React program.  Now, let's define it in the server and have the React App fetch it.
+
+The first change is to define the API in our server for the React app.  We can take the data out of the React app and place it in the server.  This will form a simple in-memory db.  Then we define the API using Express routes.  
+
+### Cross Origin Support (CORS)
+
+If you look at the code for the server you will see 2 new items: CORS support and the data for the list players.  If you study the urls and ports in our application you will notice that we were careful to serve the React App from localhost on port 9000.  We were also careful to have the React App request data from localhost port 9000.  We defined a new API for the React App to get the data from: /api/players.  These definitions do not violate Cross Origin Resource Support, or CORS, rules.  A lot happens behind the scenes when a browser asks for a web page.  When a browser first asks for a web page it sends a small message to the server called a "pre-flight message".  The web server checks this message, specifically the headers, to see if the requesting host and ports match its own.  If they do the web server sends back a positive acknowledgement to the requesting client.  If not the web server hecks to see if it has had CORS enabled.  If this is true, it will send back a positive acknowledgement anyway.
+
+We can test this out in our current setup.  Here is the full server code so far
+
+{% highlight ruby linenos %}
+var express = require('express')
+var cors = require('cors')
+var app = express()
+
+var port = 9000
+
+
+// as you can see from this structure the players are on hole {1, 2, 3, 4}
+const players = {
+    graph: [
+    {FirstName: "Joan", LastName: "Jet", ID: 1, Hole: 1, HoleLocation: "TEE"},
+    {FirstName: "Ruth", LastName: "Crist", ID: 2, Hole: 1, HoleLocation: "TEE"},
+    {FirstName: "Beth", LastName: "Flick", ID: 3, Hole: 1, HoleLocation: "TEE"},
+    {FirstName: "Julie", LastName: "Ant", ID: 4, Hole: 1, HoleLocation: "FWY"},
+    {FirstName: "Ginny", LastName: "Grey", ID: 5, Hole: 1, HoleLocation: "FWY"},
+    {FirstName: "Paula", LastName: "Lamb", ID: 6, Hole: 1, HoleLocation: "GRN"},
+    {FirstName: "Ingid", LastName: "Jones", ID: 7, Hole: 2, HoleLocation: "TEE"},
+    {FirstName: "Kelly", LastName: "Smith", ID: 8, Hole: 2, HoleLocation: "FWY"},
+    {FirstName: "Eilean", LastName: "Rams", ID: 9, Hole: 2, HoleLocation: "GRN"},
+    {FirstName: "Barb", LastName: "Sharp", ID: 10, Hole: 4, HoleLocation: "FWY"},
+    {FirstName: "Carol", LastName: "Adams", ID: 11, Hole: 4, HoleLocation: "FWY"},
+    {FirstName: "Faith", LastName: "Hope", ID: 12, Hole: 4, HoleLocation: "GRN"}
+  ]
+}
+
+app.use(cors())
+
+app.use(express.static('public'))
+
+app.get('/api/players', (request, response) => {
+    // console.log("players...", JSON.stringify(players))
+    response.setHeader('Content-Type', 'application/json');
+    response.send(JSON.stringify(players))
+})
+
+app.listen(9000, () => {
+    console.log(`app listening on port ${port}`)
+})
+{% endhighlight %}
 ## Third Server
 
 Add MongoDB and mongoose
