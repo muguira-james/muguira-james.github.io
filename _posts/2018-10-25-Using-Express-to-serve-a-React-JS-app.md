@@ -18,7 +18,7 @@ This article will describe how to setup node express to serve a React app.  We w
 
 There are many tutorials on the web that describe the process of creating a React app.  There are also numerous articles that walk through creating apps with Express. The main contrbution here will be demonstrating how to go from development to production with an existing React app.  The production version of the React app will be served by Express.
 
-## Setup Node
+## Setup Node and Express
 
 I advise you use Mozilla's great material to install Node [Mozilla MDM](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs).  I also advise you to follow the instructions for obtaining Node from the Node website.  You could use the package manager for your distribution or Brew for the Mac.  However, getting your code directly from the source is best.  Once nodeJS is installed installing Express is simply: "npm install express -g"
 
@@ -26,7 +26,7 @@ This article will build a couple of versions of the server. I'll do this to show
 
 ## First server
 
-Using node + Express can be very simple.  Consider this 4 line program:
+Using node + Express can be very simple.  Make a directory called simple_express and use "cd simple_express; npm init". then add this 4 line program as simple_press.js:
 
 {% highlight ruby %}
 var express = require('express')
@@ -42,11 +42,15 @@ app.listen(port, () => {
 })
 {% endhighlight %}
 
-The first 2 lines pull in express (after you install it with npm install express -g) and create a variable to hold the reference.  The statement "app.get" sets up a route or a way to translate the url into something the server can return to the caller.  In this case, we simply return "hello world" as a string.  Express handles all setting of the headers.  We'll do more with that in a bit. The last statement ("app.listen") starts the server and waits on input from localhost port 9000.  If you point your server to localhost:9000 you should get "hello world" back.
+The first 2 lines pull in express (after you install it with npm install express -g) and create a variable to hold the reference.  The statement "app.get" sets up a route or a way to translate the url into something the server can return to the caller.  In this case, the browser url would be "http://localhost:9000/" and the server would return "hello world" as a string.  Express handles all setting of the headers.  We'll do more with that in a bit. The last statement ("app.listen") starts the server and waits on input from localhost port 9000.  If you point your server to localhost:9000 you should get "hello world" back.
 
 At this point we could create complex html pages and serve them by adding more modules to Express.  But the article goal is to serve a React app.  How to do that?
 
-React created from the create-react-app command provides a number of "canned" scripts.  For example, we can start the app and show it in the default browser (npm start), we start the Jest test fixture (npm test) and we can have the built-in webpack bundle together our app in a build directory.  This bundled app will have the javascript code joined into a single file (or maybe 2 files, depending on your setup).  It will have all of the paths setup to run from a static path and the package.json file adjusted to run from a relative url.  Thus, the app is bundled together as a static uri resource.
+A React app created from the create-react-app command provides a number of "canned" scripts.  For example, we can start the app and show it in the default browser (npm start), we start the Jest test fixture (npm test) and we can have the built-in webpack bundle together our app in a build directory.  This bundled app will have the javascript code joined into a single file (or maybe 2 files, depending on your setup - we do a directory listing down below).  It will have all of the paths setup to run from a static path and the package.json file adjusted to run from a relative url.  Thus, the app is bundled together as a static uri resource.
+
+This article will reuse the React app we wrote to use Leaflet in React [React + Leaflet](https://muguira-james.github.io/A-creating-basic-React-app-with-a-leaflet-map/). The code can be run by issuing "npm start" from the command line.  It opens port 3000 on localhost.  Fro the browser point of view, the React app is just static content.  It is html and javascript and images.  So, we want Express to treat the React app as static content when a client requests the React App. However, the React app is setup to run from the create-react-app infrastructure.  We need to convert it to a static format for serving from our Express server.  To accomplish this we use "npm run build".  That command will create a build dir and add all of the required content.  We can copy the contents of the build dir to our Express server "public".  We are going to run the build step manually, but you might want to look into Jenkins to handle it automatically.
+
+### Setup Express for serving static content
 
 The first thing we need to do is to tell Express how to serve static content, such as index.html files and images.  When you work with Express you have the ability to extend it by adding "middle-ware" that helps with adding functionality.  We are going to take advantage of a middle-ware that let's Express serve static information.  It is a single line that we add right before we setup our route:
 
@@ -69,7 +73,7 @@ app.listen(3000, () => {
 })
 {% endhighlight %}
 
-After we copy all of our bundled React app, from the build directory into "public" our directoy structure for the project looks like this:
+After we copy all of our bundled React app, from the build directory into the Express "public" directoy, our structure for the project looks like this:
 
 {% highlight ruby %}
 asset-manifest.json	favicon.ico		index.html		manifest.json		service-worker.js	static
