@@ -103,5 +103,5 @@ theme: ''
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: 'git'
-  repo: https://github.com/muguira-james/muguira-james.github.io.git
+  repo: https://github.com/muguira-james/muguira-james.github.io
   branch: master
