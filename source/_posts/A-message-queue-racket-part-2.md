@@ -1,6 +1,6 @@
 ---
 title: A Message queue in Racket - part 2
-date: 2021-10-13 10:26:28
+date: 2021-10-22 10:26:28
 tags:
 ---
 
@@ -71,7 +71,7 @@ So far, our backend architecture defines a front door and a middle layer. The fr
 
 ```
 
-There are now 4 methods (in reverse order): server/servlet, request-handler, define-values, and http-response. Http-response has not changed. It is our common code we defined to reply to a request from a caller.  It takes a string as input and create a http response suitable for a caller to process with either text (TEXT/HTML-MIME-TYPE) or JSON.  To REALLY do JSON we should change the ?TEXT/HTML-MIME-TYPE? string to ?APPLICATION/JSON?, but we'll leave that for now.
+There are now 4 methods (in reverse order): server/servlet, request-handler, define-values, and http-response. Http-response has not changed. It is our common code we defined to reply to a request from a caller.  It takes a string as input and create a http response suitable for a caller to process with either text (TEXT/HTML-MIME-TYPE) or JSON.  To REALLY do JSON we should change the "TEXT/HTML-MIME-TYPE" string to "APPLICATION/JSON", but we'll leave that for now.
 
 The next function, define-values is a Racket construct that binds variables as the language parser is working its way through code file. It builds a look up table.  It works like a let statement in that variable definitions are created as the reader is parsing your Racket expressions. Racket uses a 2-step process to translate Racket expressions into working code: a reader and an expansion processor. The define-values creates and binds values to the variables during the reader process. In our case, for each item found on the input URL, the dispatcher will look for a definition. The only valid URL expansions are: 
 
