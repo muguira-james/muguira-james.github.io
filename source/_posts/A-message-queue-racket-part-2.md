@@ -3,15 +3,17 @@ title: A Message queue in Racket - part 2
 date: 2021-10-13 10:26:28
 tags:
 ---
+
+This post is the second in a series describing the creation of a message queue 
+<!-- more -->
+
 # Introduction
 
-This is the 2nd post in this series. We are exploring building a message queue using Racket. The message queue is a program that provides an API to store and retrieve messages. 
-It organizes messages on topics and each topic has a queue associated with it. 
+This is the 2nd post in this series. We are exploring building a message queue using Racket. The message queue is a program that provides an API to store and retrieve messages. It organizes messages on topics and each topic has a queue associated with it. 
 
-We are using Racket?s web stack to provide the web interface, a Racket hash-table to provide the topics and a Racket data/queue to provide the queues for storing messages.  
-Racket provides a nice JSON library for handling JSON.
+We are using Racket?s web stack to provide the web interface, a Racket hash-table to provide the topics and a Racket data/queue to provide the queues for storing messages. Racket provides a nice JSON library for handling JSON.
 
-In the first installment of this [series (see the file ?web3-p.rkt?)]( https://github.com/muguira-james/racket-stuff.git), we described the scaffolding for the application. The application at this point exposes an API with 1 method in it: ?hello?, which just provides a string with the date and time embedded when you call it. We will define more data structures and 2 more API calls in this article.
+In the first installment of this [series]( https://muguira-james.github.io/2021/10/13/A-message-Queue-in-Racket/), we described the scaffolding for the application. The application at this point exposes an API with 1 method in it: ?hello?, which just provides a string with the date and time embedded when you call it. We will define more data structures and 2 more API calls in this article.
 
 So far, our backend architecture defines a front door and a middle layer. The front door code hides the web mechanics of handling http requests. It dispatches to our simple ?hello? API method. Let?s extend that to expose the dispatching. Once we have the dispatch code exposed, we can further extend to add the various API calls that finish off the application. The last line of the application called the web server start up code and established the ports, URLs and other items needed to make our sever. Our extensions follow:
 
@@ -73,15 +75,15 @@ There are now 4 methods (in reverse order): server/servlet, request-handler, def
 
 The next function, define-values is a Racket construct that binds variables as the language parser is working its way through code file. It builds a look up table.  It works like a let statement in that variable definitions are created as the reader is parsing your Racket expressions. Racket uses a 2-step process to translate Racket expressions into working code: a reader and an expansion processor. The define-values creates and binds values to the variables during the reader process. In our case, for each item found on the input URL, the dispatcher will look for a definition. The only valid URL expansions are: 
 
-??, which corresponds to http://localhost:8000/, 
-?hello?, which would call the hello function, 
-?enque?, which would call the enqueue function,
-?deque?, which would call the dequeue function,
-?topic-list?, which calls topic-list function,
-?topic-count?, which calls the topic-count function,
-?topic-data?, which calls the topic-data function,
-?drain-topic?, calling the topic drain function,
-?drain-que?, calling the drain queue function.
+* "", which corresponds to http://localhost:8000/, 
+* "hello", which would call the hello function, 
+* "enque", which would call the enqueue function,
+* "deque", which would call the dequeue function,
+* "topic-list", which calls topic-list function,
+* "topic-count", which calls the topic-count function,
+* "topic-data", which calls the topic-data function,
+* "drain-topic", calling the topic drain function,
+* "drain-que", calling the drain queue function.
 
 If the item decoded from the URL does equal one of those handlers, the dispatcher will call the error handler. The next function is the actual request-handler. The Racket web application framework we are working with will parse the in-coming URL and break it down into components.  By the time the server is ready to call request-handler, which you notice is the 1st parameter to the server/servlet, the URL is parsed, and the API is ready to decode and route to the correct call.  For example, if we were to use curl, a well-formed URL would look like:
 
@@ -96,7 +98,7 @@ The previous section just described the entire front door of our message queue. 
 
 The first function we introduce is enqueue.  The basic message storage mechanism for the program is a topic hash, which is a hash table where the keys are the topic names and each name has a value element hat is a data/queue. This function adds a message payload element into the queue associated with the topic.  This topic structure can be visualized like so:
 
-[image](/images/Racket-queue-2.png)
+![topic-hash structure](/images/Racket-queue-2.png)
 
 The enqueue function in our message queue system has 2 elements: the dispatch target in the front door and a function for handling the message data structure. Let?s take a look at the front door element:
 
@@ -157,13 +159,13 @@ In the node code terminal:
 
 ```
 $ node enq.js -q a-topic -p ?brownies and ice cream?
-Options-> { que_name: ?a-topic?,  payload: ?brownies and ice cream? }
-Sending? { que_name: ?a-topic?,  payload: ?brownies and ice cream? }
+Options-> { que_name: "a-topic",  payload: "brownies and ice cream" }
+Sending... { que_name: "a-topic",  payload: "brownies and ice cream" }
 {
-	count: 1,
-	data: ?brownies and ice cream?,
-	keys: [ ?a-topic? ],
-	?topic-name?: ?a-topic?
+count: 1,
+data: "brownies and ice cream",
+keys: [ "a-topic" ],
+topic-name: "a-topic"
 }
 ```
 Quite a lot of output from each window, but you can see how the racket front-door program used ?display? to send data to the console.
