@@ -11,11 +11,11 @@ This post is the second in a series describing the creation of a message queue
 
 This is the 2nd post in this series. We are exploring building a message queue using Racket. The message queue is a program that provides an API to store and retrieve messages. It organizes messages on topics and each topic has a queue associated with it. 
 
-We are using Racket?s web stack to provide the web interface, a Racket hash-table to provide the topics and a Racket data/queue to provide the queues for storing messages. Racket provides a nice JSON library for handling JSON.
+We are using Racket's web stack to provide the web interface, a Racket hash-table to provide the topics and a Racket data/queue to provide the queues for storing messages. Racket provides a nice JSON library for handling JSON.
 
-In the first installment of this [series]( https://muguira-james.github.io/2021/10/13/A-message-Queue-in-Racket/), we described the scaffolding for the application. The application at this point exposes an API with 1 method in it: ?hello?, which just provides a string with the date and time embedded when you call it. We will define more data structures and 2 more API calls in this article.
+In the first installment of this [series]( https://muguira-james.github.io/2021/10/13/A-message-Queue-in-Racket/), we described the scaffolding for the application. The application at this point exposes an API with 1 method in it: 'hello', which just provides a string with the date and time embedded when you call it. We will define more data structures and 1 more API call in this article.
 
-So far, our backend architecture defines a front door and a middle layer. The front door code hides the web mechanics of handling http requests. It dispatches to our simple ?hello? API method. Let?s extend that to expose the dispatching. Once we have the dispatch code exposed, we can further extend to add the various API calls that finish off the application. The last line of the application called the web server start up code and established the ports, URLs and other items needed to make our sever. Our extensions follow:
+So far, our backend architecture defines a front door and a middle layer. The front door code hides the web mechanics of handling http requests. It dispatches to our simple 'hello' API method. Let's extend that to expose the dispatching. Once we have the dispatch code exposed, we can further extend to add the various API calls that finish off the application. The last line of the application called the web server start up code and established the ports, URLs and other items needed to make our sever. Our extensions follow:
 
 ```
 #lang racket
@@ -71,7 +71,7 @@ So far, our backend architecture defines a front door and a middle layer. The fr
 
 ```
 
-There are now 4 methods (in reverse order): server/servlet, request-handler, define-values, and http-response. Http-response has not changed. It is our common code we defined to reply to a request from a caller.  It takes a string as input and create a http response suitable for a caller to process with either text (TEXT/HTML-MIME-TYPE) or JSON.  To REALLY do JSON we should change the ?TEXT/HTML-MIME-TYPE? string to ?APPLICATION/JSON?, but we?ll leave that for now.
+There are now 4 methods (in reverse order): server/servlet, request-handler, define-values, and http-response. Http-response has not changed. It is our common code we defined to reply to a request from a caller.  It takes a string as input and create a http response suitable for a caller to process with either text (TEXT/HTML-MIME-TYPE) or JSON.  To REALLY do JSON we should change the ?TEXT/HTML-MIME-TYPE? string to ?APPLICATION/JSON?, but we'll leave that for now.
 
 The next function, define-values is a Racket construct that binds variables as the language parser is working its way through code file. It builds a look up table.  It works like a let statement in that variable definitions are created as the reader is parsing your Racket expressions. Racket uses a 2-step process to translate Racket expressions into working code: a reader and an expansion processor. The define-values creates and binds values to the variables during the reader process. In our case, for each item found on the input URL, the dispatcher will look for a definition. The only valid URL expansions are: 
 
@@ -96,11 +96,11 @@ $ curl --data "{ "param1": "value1", "param2": "value2"  http://hostname/resourc
 
 The previous section just described the entire front door of our message queue. The next sections describe the middle layer. Here we will introduce the logic for each API call and describe how to test the code.
 
-The first function we introduce is enqueue.  The basic message storage mechanism for the program is a topic hash, which is a hash table where the keys are the topic names and each name has a value element hat is a data/queue. This function adds a message payload element into the queue associated with the topic.  This topic structure can be visualized like so:
+The first function we introduce is enqueue.  The basic message storage mechanism for the program is a topic hash, which is a hash table where the keys are the topic names and each name has a value element that is a Racket data/queue. This function adds a message payload element into the queue associated with the topic.  This topic structure can be visualized like so:
 
 ![topic-hash structure](/images/Racket-queue-2.png)
 
-The enqueue function in our message queue system has 2 elements: the dispatch target in the front door and a function for handling the message data structure. Let?s take a look at the front door element:
+The enqueue function in our message queue system has 2 elements: the dispatch target in the front door and a function for handling the message data structure. Let's take a look at the front door element:
 
 ```
 ;; a hash is structured as a topic and a queue
@@ -127,7 +127,7 @@ The enqueue function in our message queue system has 2 elements: the dispatch ta
         (http-response (with-output-to-string (lambda  () (write-json rtn))))))))
 ```
 
-While it looks complex, that is because it handles getting the topic name and payload from the input http message. It then calls the code that handles the internal data structures.  Finally, it builds the output response to send back to the client.  The response is most of the code. The response creates a hash, which is converted to JSON and written to the client.  The response hash fields: ?topic-name?, ?data?, ?count? and the ?key? value all encoded.
+While it looks complex, that is because it handles getting the topic name and payload from the input http message. It then calls the code that handles the internal data structures.  Finally, it builds the output response to send back to the client.  The response is most of the code. The response creates a hash, which is converted to JSON and written to the client.  The response hash fields: "topic-name", "data", "count" and the "key" value all encoded.
 
 The enqueue function takes a topic name and a message payload element as input. Its operation is simple: if the topic-name is present, add the message data to the queue and return.  If not present, create a new queue, add the message data to that queue and add that queue to the input topic-name, then return.
 
@@ -142,7 +142,7 @@ The enqueue function takes a topic name and a message payload element as input. 
           (hash-set! topic-hash key q)))))
 ```
 
-Let?s test the program. To do so, use the racket program interpreter to run the front-door.rkt file. This will produce some messages. Now, in another terminal, let?s run the test code ?enq.js? which will try and add a topic and payload to the message queue system. The output looks like:
+Let's test the program. To do so, use the racket program interpreter to run the front-door.rkt file. This will produce some messages. Now, in another terminal, let's run the test code "enq.js" which will try and add a topic and payload to the message queue system. The output looks like:
 
 In the racket terminal:
 
@@ -158,7 +158,7 @@ enq: name: "a-topic": data: "("brownies and ice cream") hash-size:  1 hash-keys:
 In the node code terminal:
 
 ```
-$ node enq.js -q a-topic -p ?brownies and ice cream?
+$ node enq.js -q a-topic -p "brownies and ice cream"
 Options-> { que_name: "a-topic",  payload: "brownies and ice cream" }
 Sending... { que_name: "a-topic",  payload: "brownies and ice cream" }
 {
@@ -168,7 +168,7 @@ keys: [ "a-topic" ],
 topic-name: "a-topic"
 }
 ```
-Quite a lot of output from each window, but you can see how the racket front-door program used ?display? to send data to the console.
+Quite a lot of output from each window, but you can see how the racket front-door program used "display" to send data to the console.
 
 This is the node program enq.js:
 
