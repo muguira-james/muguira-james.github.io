@@ -88,7 +88,7 @@ The next function, define-values is a Racket construct that binds variables as t
 If the item decoded from the URL does equal one of those handlers, the dispatcher will call the error handler. The next function is the actual request-handler. The Racket web application framework we are working with will parse the in-coming URL and break it down into components.  By the time the server is ready to call request-handler, which you notice is the 1st parameter to the server/servlet, the URL is parsed, and the API is ready to decode and route to the correct call.  For example, if we were to use curl, a well-formed URL would look like:
 
 ```
-$ curl --data ?{ ?param1?: ?value1?, ?param2?: ?value2?  http://hostname/resource
+$ curl --data "{ "param1": "value1", "param2": "value2"  http://hostname/resource
 
 ```
 
@@ -150,9 +150,9 @@ In the racket terminal:
 $ racket  front-door.rkt
 Your Web application is running at http://localhost:8000.
 Stop this program at any time to terminate the Web Server.
-enq: name: ?a-topic?: data: ?(?brownies and ice cream?) hash-size:  1 hash-keys: ?(?a-topic?)
+enq: name: "a-topic": data: "("brownies and ice cream") hash-size:  1 hash-keys: "("a-topic")
 
-{?count?: 1, ?data?: [?brownies and ice cream?], ?keys?: [?a-topic?], ?topic-name?:  ?a-topic? }
+{"count": 1, "data": ["brownies and ice cream"], "keys": ["a-topic"], "topic-name":  "a-topic" }
 ```
 
 In the node code terminal:
