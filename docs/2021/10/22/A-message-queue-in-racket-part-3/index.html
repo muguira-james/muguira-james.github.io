@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>A-message-queue-in-racket-part-3 | My musing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="This is the third part of the series">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A-message-queue-in-racket-part-3">
+<meta property="og:url" content="http://muguira-james.github.io/2021/10/22/A-message-queue-in-racket-part-3/index.html">
+<meta property="og:site_name" content="My musing">
+<meta property="og:description" content="This is the third part of the series">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://muguira-james.github.io/images/MQ-Architecture-1.png">
+<meta property="og:image" content="http://muguira-james.github.io/images/Racket-queue-2.png">
+<meta property="article:published_time" content="2021-10-23T01:14:10.000Z">
+<meta property="article:modified_time" content="2021-10-23T02:04:45.178Z">
+<meta property="article:author" content="James Muguira">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://muguira-james.github.io/images/MQ-Architecture-1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="My musing" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">My musing</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">A place to write and describe</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://muguira-james.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-A-message-queue-in-racket-part-3" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/22/A-message-queue-in-racket-part-3/" class="article-date">
+  <time class="dt-published" datetime="2021-10-23T01:14:10.000Z" itemprop="datePublished">2021-10-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      A-message-queue-in-racket-part-3
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>This is the third part of the series</p>
+<span id="more"></span>
+
+<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>The first 2 parts of this series introduced the scaffolding and 2 API calls. We are creating a message queuing system, similar to Rabbit MQ or Apache ActiveMQ. The idea is to create a server that can be used to store and retrieve data. The server interface is an API consisting of 2 different layers: a user interface for adding and deleting items from queues assoicated with topics; and an administration interface that returns the number of topics, list of topics, data for a topic and allows us to remove all data for a topic.</p>
+<p>At this point we have the scaffolding and 2 API  calls implemented: Hello, which is a monitoring API; and enqueue which is used to add items into the queue for a given topic. This time we will implement; dequeue, which completes the user interface. We will also implement the administrative interface consisting of topic-list, topic-data, topic-count, topic-drain, topic-remove and drain-queue. That is  a lot, let’s get going.</p>
+<p>First, to set expectations, here is the complete program to date:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">(require web-server/servlet) </span><br><span class="line">(require web-server/servlet-env)</span><br><span class="line">(require json)</span><br><span class="line">(require data/queue)</span><br><span class="line"></span><br><span class="line">;; a hash is structured as a topic and a queue</span><br><span class="line">(define topic-hash (make-hash))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">; Hello - say hello and add the date and time</span><br><span class="line">(define (hello request)</span><br><span class="line">  ; just say nothing useful</span><br><span class="line">  (http-response &quot;&lt;div&gt;welcome to &lt;span style=\&quot;color:blue\&quot;&gt;jamQ&lt;/span&gt;&lt;/div&gt;&quot;))</span><br><span class="line"></span><br><span class="line">;</span><br><span class="line">; handle adding  a message to a topic</span><br><span class="line">(define (add-data-to-topic key data)</span><br><span class="line">  ;; check to see if key is in the topic-hash and add data to the correct topic</span><br><span class="line">  (if (contains-topic key)</span><br><span class="line">      (enqueue! (hash-ref topic-hash key) data)</span><br><span class="line">      (begin</span><br><span class="line">        (let ([q (make-queue)])</span><br><span class="line">          (enqueue! q data)</span><br><span class="line">          (hash-set! topic-hash key q)))))</span><br><span class="line"></span><br><span class="line">;</span><br><span class="line">; helper function to return a byte array</span><br><span class="line">(define (request-&gt;jshash request)</span><br><span class="line">  (string-&gt;jsexpr (bytes-&gt;string/utf-8 (request-post-data/raw request))))</span><br><span class="line"></span><br><span class="line">;</span><br><span class="line">; front-door of the enqueue function</span><br><span class="line">(define (enque request)</span><br><span class="line">  ; put something in a queue</span><br><span class="line">  ; input: &#123; topic: &quot;name&quot;, payload: &quot;data-type&quot; &#125;</span><br><span class="line">  (let* ([hsh (request-&gt;jshash request)]</span><br><span class="line">         [topic-name (hash-ref hsh &#x27;topicname)]</span><br><span class="line">         [payload-data (hash-ref hsh &#x27;payload)])</span><br><span class="line">    (begin         </span><br><span class="line">      (add-data-to-topic topic-name payload-data)</span><br><span class="line">      (displayln</span><br><span class="line">       (format</span><br><span class="line">        &quot;enq: name: ~v: data: ~v hash-size: ~v hash-keys: ~v~%&quot;</span><br><span class="line">        topic-name payload-data (hash-count topic-hash) (hash-keys topic-hash)))</span><br><span class="line">      (let ([rtn (make-hash)])</span><br><span class="line">        (hash-set! rtn &#x27;topic-name topic-name)</span><br><span class="line">        (hash-set! rtn &#x27;data payload-data)</span><br><span class="line">        (hash-set! rtn &#x27;count (hash-count topic-hash))</span><br><span class="line">        (hash-set! rtn &#x27;keys (hash-keys topic-hash))</span><br><span class="line">        (displayln (with-output-to-string (lambda () (write-json  rtn))))</span><br><span class="line">        (http-response (with-output-to-string (lambda  () (write-json rtn))))))))</span><br><span class="line"></span><br><span class="line">;</span><br><span class="line">; return a byte array formated like an http response</span><br><span class="line">(define (http-response content)  </span><br><span class="line">  (response/full</span><br><span class="line">    200                  ; HTTP response code.</span><br><span class="line">    #&quot;OK&quot;                ; HTTP response message.</span><br><span class="line">    (current-seconds)    ; Timestamp.</span><br><span class="line">    TEXT/HTML-MIME-TYPE  ; MIME type for content.</span><br><span class="line">    &#x27;()                  ; Additional HTTP headers.</span><br><span class="line">    (list                ; Content (in bytes) to send to the browser.</span><br><span class="line">      (string-&gt;bytes/utf-8 content))))</span><br><span class="line"></span><br><span class="line">;</span><br><span class="line">; look up table for the routing of our API</span><br><span class="line">(define-values (dispatch generate-url)</span><br><span class="line">  ;; URL routing table (URL dispatcher).</span><br><span class="line">  (dispatch-rules</span><br><span class="line">   [(&quot;&quot;) hello]</span><br><span class="line">   [(&quot;hello&quot;) hello]  ; check to see if the service is working</span><br><span class="line">   [(&quot;enque&quot;) #:method &quot;post&quot; enque]</span><br><span class="line">   [(&quot;deque&quot;) #:method &quot;post&quot; deque]</span><br><span class="line">   [(&quot;topic-list&quot;) topic-list]</span><br><span class="line">   [(&quot;topic-count&quot;) topic-count]</span><br><span class="line">   [(&quot;topic-data&quot;) #:method &quot;post&quot; topic-data]</span><br><span class="line">   [else (error &quot;page not found&quot;)]))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">(define (request-handler request)</span><br><span class="line">  (dispatch request))</span><br><span class="line"></span><br><span class="line">;; Start the server.</span><br><span class="line">(serve/servlet</span><br><span class="line">  request-handler</span><br><span class="line">  #:launch-browser? #f</span><br><span class="line">  #:quit? #f</span><br><span class="line">  ; have to listen on the  right host NOT 127.0.0.1</span><br><span class="line">  #:listen-ip &quot;0.0.0.0&quot;</span><br><span class="line">  #:port 8000</span><br><span class="line">  #:servlet-regexp #rx&quot;&quot;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>Our first function to implement is the opposite of adding an item to a topic, removing an item. In this case, we just remove and return the first  item in the queue. Before we see the implementation let’s review the architecture of the system and the topic hash data structure. The system architecture is a front door that handles http requests and responses. There is a middle layer that handles the internal data structures and finally the internal  data structures themselves.</p>
+<p><img src="/images/MQ-Architecture-1.png" alt="system architecture"></p>
+<p>The internal data structure we are manipulating is a hash table. The keys in the hash table are the topic  names. For each key, the value is a queue with all the items associated with that topic.</p>
+<p><img src="/images/Racket-queue-2.png" alt="internal data structure"></p>
+<p>The enqueue function checked to see if a topic name existed in the hash table, adding it and the message data if required. Deleting messages off a topic is handled by popping the top item off the queue for a topic and returning that message.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">(define (request-&gt;jshash request)</span><br><span class="line">  (string-&gt;jsexpr (bytes-&gt;string/utf-8 (request-post-data/raw request))))</span><br><span class="line"></span><br><span class="line">(define (get-queue-for-topic topic-name)</span><br><span class="line">  ; just return the queue for this topic,</span><br><span class="line">  ;  somebody  else has to check to see if the topic-name exists</span><br><span class="line">      (hash-ref topic-hash topic-name))</span><br><span class="line"></span><br><span class="line">(define (remove-data-from-topic topic-name)</span><br><span class="line">  (if (contains-topic topic-name)</span><br><span class="line">      (begin</span><br><span class="line">        (let* ([datam (dequeue! (get-queue-for-topic topic-name))])</span><br><span class="line">          ;(displayln (format &quot;::-&gt;~v&quot; datam)</span><br><span class="line">          datam))</span><br><span class="line">      (begin</span><br><span class="line">        (let* ([rtn (format &quot;did not find topic ~v~%&quot; topic-name)])</span><br><span class="line">          (display rtn)</span><br><span class="line">          rtn))))</span><br><span class="line">        </span><br><span class="line">(define (deque request)</span><br><span class="line">  ; check if topic exists, remove 1st item from topic queue</span><br><span class="line">  (let* ([js-hsh (request-&gt;jshash request)]</span><br><span class="line">         [topic-name (hash-ref js-hsh &#x27;topicname)]</span><br><span class="line">         [rtn (make-hash)]</span><br><span class="line">         [datam (remove-data-from-topic topic-name)])</span><br><span class="line">    (begin</span><br><span class="line">      (hash-set! rtn &#x27;topic-name topic-name)</span><br><span class="line">      (hash-set! rtn &#x27;payload datam)</span><br><span class="line">      (displayln (format &quot;:datam:-&gt;~v --&gt; ~v~%&quot; datam rtn ))</span><br><span class="line">      (displayln (with-output-to-string (lambda () (write-json rtn))))</span><br><span class="line">      (http-response (with-output-to-string (lambda  () (write-json rtn)))))))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>The implementation of deque has 3 helper functions: “remove-data-from-topic”, “get-queue-for-topic” and “request-&gt;jshash”. </p>
+<ul>
+<li>Request-&gt;jshash takes the data coming in on the http POST and converts it to a Racket hash for easy access. </li>
+<li>get-queue-for-topic is a function to return the queue assoicated with a topic-name.</li>
+<li>remove-data-from-topic handles the actual removal of the top message from the topic queue.</li>
+<li>deque handles reformating the incoming http request, removing the data and formating the http response.</li>
+</ul>
+<p>Enque and deque are the “user interface” API calls for adding and removing messages to and from a topic. Next, let’s start on the administration interface. First we can implement “topic-list”, which simply creates a JSON list of all known topic names.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(define (topic-list request)</span><br><span class="line">  ; show me all the topics in the topic-hash</span><br><span class="line">  (begin</span><br><span class="line">    (let* ([rtn (make-hash)])</span><br><span class="line">      (hash-set! rtn &#x27;topic-list (hash-keys topic-hash))</span><br><span class="line">           </span><br><span class="line">      (displayln (with-output-to-string (lambda () (write-json rtn))))</span><br><span class="line">      (http-response (with-output-to-string (lambda() (write-json rtn)))))))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>The implementation is straight forward. Create a return hash, which holds our topic name list. Get the current keys from the topic-name hash and format that list out as JSON.</p>
+<p>Let’s tackle “topic-count” and “topic-data”. </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">(define (topic-count request)</span><br><span class="line">  ; show me a count of topics</span><br><span class="line">  ; input: &#123; count-topics: &quot;all&quot; &#125;</span><br><span class="line">  (begin</span><br><span class="line">    (let ([rtn (make-hash)])</span><br><span class="line">      (hash-set! rtn &#x27;topic-count (hash-count topic-hash))</span><br><span class="line">      (displayln (with-output-to-string (lambda () (write-json rtn))))</span><br><span class="line">      (http-response (with-output-to-string (lambda () (write-json rtn)))))))</span><br><span class="line"></span><br><span class="line">(define (topic-data request)</span><br><span class="line">  ; list all data in a topic</span><br><span class="line">  (let* ([hsh (request-&gt;jshash request)]</span><br><span class="line">         [topic-name (hash-ref hsh &#x27;quename)]</span><br><span class="line">         [rtn (make-hash)])</span><br><span class="line">        (hash-set! rtn &#x27;topic-name topic-name)</span><br><span class="line">        (hash-set!  rtn &#x27;topic-list (queue-&gt;list (hash-ref topic-hash topic-name)))</span><br><span class="line">        (displayln (with-output-to-string (lambda () (write-json rtn))))</span><br><span class="line">        (http-response (with-output-to-string (lambda () (write-json rtn))))))</span><br></pre></td></tr></table></figure>
+
+<p>The function “topic-count” grabs a count of the total number of topics in the topic hash at that moment and formats it out to a JSON object. The function “topic-data” returns a JSON list of all the messages associated with a topic.</p>
+<p>Next, we will code “drain-queue”. The function “drain-queue” is supposed to remove all data associated with an input topic-name. Danger!! The implementation takes advantage of the hash function library to overwrite the queue for that topic name with a freshly initialized and empty queue. That is, we OVERWRITE the old queue.  It is up to the gabage collector to free the memory used by the old messages in the old queue.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(define (drain-queue request)</span><br><span class="line">  (let* ([hsh (request-&gt;jshash request)]</span><br><span class="line">         [topic-name (hash-ref hsh &#x27;quename)]</span><br><span class="line">         [rtn (make-hash)])</span><br><span class="line">    (hash-set! topic-hash topic-name (make-queue))</span><br><span class="line">    (hash-set!  rtn &#x27;topic-name topic-name)</span><br><span class="line">    (hash-set! rtn &#x27;message &quot;drain-queue: all data deleted&quot;)</span><br><span class="line">    (displayln (with-output-to-string (lambda () (write-json rtn))))</span><br><span class="line">    (http-response (with-output-to-string (lambda ()  (write-json  rtn))))))</span><br></pre></td></tr></table></figure>
+
+<p>Finally, we can code “topic-remove”. This function removes the topic from the topic list. The Racket garbage collector will handle cleaning up the data/queue.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(define (topic-remove request)</span><br><span class="line">  (let* ([hsh  (request-&gt;jshash request)]</span><br><span class="line">         [topic-name (hash-ref hsh &#x27;quename)]</span><br><span class="line">         [rtn (make-hash)])</span><br><span class="line">    (hash-remove! topic-hash topic-name)</span><br><span class="line">    (hash-set! rtn &#x27;message (format &quot;topic-remove: removed topic ~v&quot; topic-name))</span><br><span class="line">    (displayln (with-output-to-string (lambda  () (write-json rtn))))</span><br><span class="line">    (http-response (with-output-to-string (lambda () (write-json rtn))))))</span><br></pre></td></tr></table></figure>
+
+<p>With that we have defined a message queue. It is 218 lines total. It is not very sophisticaded. It also may have bugs. </p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>That rounds out the full implementation of the message queue system. The next article will explore how to restrcuture the single code file so we can test it using Racket’s test capabilities.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muguira-james.github.io/2021/10/22/A-message-queue-in-racket-part-3/" data-id="ckv5my56p001wn5e87y6xdmz2" data-title="A-message-queue-in-racket-part-3" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/10/24/A-message-queue-in-racket-part-4/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          A-message-queue-in-racket-part-4
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/10/22/A-message-queue-racket-part-2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">A Message queue in Racket - part 2</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Containers/">Containers</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Design/">Design</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/">Programming</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Containers/">Containers</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Containers/" rel="tag">Containers</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cucumber/" rel="tag">Cucumber</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Design/" rel="tag">Design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Express/" rel="tag">Express</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Insight/" rel="tag">Insight</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Javascript/" rel="tag">Javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jest/" rel="tag">Jest</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mobile/" rel="tag">Mobile</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MongoDB/" rel="tag">MongoDB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node/" rel="tag">Node</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/REST/" rel="tag">REST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Racket/" rel="tag">Racket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Containers/" style="font-size: 10px;">Containers</a> <a href="/tags/Cucumber/" style="font-size: 10px;">Cucumber</a> <a href="/tags/Design/" style="font-size: 10px;">Design</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Express/" style="font-size: 10px;">Express</a> <a href="/tags/Insight/" style="font-size: 10px;">Insight</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Javascript/" style="font-size: 10px;">Javascript</a> <a href="/tags/Jest/" style="font-size: 10px;">Jest</a> <a href="/tags/Mobile/" style="font-size: 10px;">Mobile</a> <a href="/tags/MongoDB/" style="font-size: 10px;">MongoDB</a> <a href="/tags/Node/" style="font-size: 10px;">Node</a> <a href="/tags/REST/" style="font-size: 10px;">REST</a> <a href="/tags/Racket/" style="font-size: 10px;">Racket</a> <a href="/tags/React/" style="font-size: 15px;">React</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/10/24/A-message-queue-in-racket-part-4/">A-message-queue-in-racket-part-4</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/22/A-message-queue-in-racket-part-3/">A-message-queue-in-racket-part-3</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/22/A-message-queue-racket-part-2/">A Message queue in Racket - part 2</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/13/A-message-Queue-in-Racket/">Using Racket to define a message queue - part 1</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/20/2021-09-20-Docker-with-racket/">Using Racket in Docker containers</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 James Muguira<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
