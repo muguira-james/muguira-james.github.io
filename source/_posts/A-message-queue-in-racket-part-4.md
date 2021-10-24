@@ -2,6 +2,9 @@
 title: A-message-queue-in-racket-part-4
 date: 2021-10-24 12:36:11
 tags:
+  - Racket
+categories:
+  - Programming
 ---
 
 building a message queue  in Racket - part 4
