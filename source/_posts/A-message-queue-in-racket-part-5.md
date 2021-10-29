@@ -3,7 +3,7 @@ title: A-message-queue-in-racket-part-5
 date: 2021-10-25 12:31:45
 tags:
   - Racket
-Categories:
+categories:
   - Programming
   - message queue
 ---
