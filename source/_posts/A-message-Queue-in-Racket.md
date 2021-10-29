@@ -2,6 +2,10 @@
 title: Using Racket to define a message queue - part 1
 date: 2021-10-13 10:26:28
 tags:
+  - Racket
+Categories:
+  - Programming
+  - message queue
 ---
 
 
