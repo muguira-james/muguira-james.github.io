@@ -5,11 +5,18 @@ tags:
   - Racket
 categories:
   - Programming
+  - message queue
 ---
 
 
 This is the third part of the series
 <!-- more -->
+
+# Table of Contents:
+* Introduction and review of the Front-door shell
+* dequeue - deleting messages from a topic
+* The Admin interface
+* Conclusion
 
 # Introduction
 
@@ -115,6 +122,9 @@ First, to set expectations, here is the complete program to date:
   #:servlet-regexp #rx"")
 
 ```
+
+# Implemention of dequeu - deleting message from a topic
+
 Our first function to implement is the opposite of adding an item to a topic, removing an item. In this case, we just remove and return the first  item in the queue. Before we see the implementation let's review the architecture of the system and the topic hash data structure. The system architecture is a front door that handles http requests and responses. There is a middle layer that handles the internal data structures and finally the internal  data structures themselves.
 
 ![system architecture](/images/MQ-Architecture-1.png)
@@ -167,6 +177,8 @@ The implementation of deque has 3 helper functions: "remove-data-from-topic", "g
 * get-queue-for-topic is a function to return the queue assoicated with a topic-name.
 * remove-data-from-topic handles the actual removal of the top message from the topic queue.
 * deque handles reformating the incoming http request, removing the data and formating the http response.
+
+# The admin interface
 
 Enque and deque are the "user interface" API calls for adding and removing messages to and from a topic. Next, let's start on the administration interface. First we can implement "topic-list", which simply creates a JSON list of all known topic names.
 

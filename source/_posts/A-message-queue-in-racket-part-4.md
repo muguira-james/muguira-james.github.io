@@ -5,10 +5,16 @@ tags:
   - Racket
 categories:
   - Programming
+  - message queue
 ---
 
 building a message queue  in Racket - part 4
 <!-- more -->
+
+# Table of Contents
+* Restructuring the code 
+* The Front-door
+* The middleware
 
 # Introduction
 

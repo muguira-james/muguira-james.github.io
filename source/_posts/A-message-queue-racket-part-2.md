@@ -10,6 +10,11 @@ categories:
 This post is the second in a series describing the creation of a message queue 
 <!-- more -->
 
+# Table of Contents:
+* Introducing the server shell
+* The middle layer
+* Testing what we have
+
 # Introduction
 
 This is the 2nd post in this series. We are exploring building a message queue using Racket. The message queue is a program that provides an API to store and retrieve messages. It organizes messages on topics and each topic has a queue associated with it. 
@@ -144,6 +149,8 @@ The enqueue function takes a topic name and a message payload element as input. 
           (enqueue! q data)
           (hash-set! topic-hash key q)))))
 ```
+
+# Testing what we have
 
 Let's test the program. To do so, use the racket program interpreter to run the front-door.rkt file. This will produce some messages. Now, in another terminal, let's run the test code "enq.js" which will try and add a topic and payload to the message queue system. The output looks like:
 
