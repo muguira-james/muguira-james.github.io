@@ -9,7 +9,7 @@ categories:
 ---
 
 
-This post will explain how to use Racket's simulation facilities: big-bang.
+This post will explain how to use Racket's simulation facilities: big-bang. 
 
 <!-- more -->
 
