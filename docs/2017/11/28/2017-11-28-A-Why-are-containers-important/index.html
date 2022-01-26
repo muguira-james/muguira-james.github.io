@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"muguira-james.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Explain micro-services and containers">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Why are containers important">
+<meta property="og:url" content="http://muguira-james.github.io/2017/11/28/2017-11-28-A-Why-are-containers-important/index.html">
+<meta property="og:site_name" content="My musing">
+<meta property="og:description" content="Explain micro-services and containers">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://muguira-james.github.io/images/ContainerVsVM.png">
+<meta property="og:image" content="http://muguira-james.github.io/images/CreatingANewsGraph.png">
+<meta property="article:published_time" content="2017-11-28T18:27:12.000Z">
+<meta property="article:modified_time" content="2022-01-26T02:24:54.559Z">
+<meta property="article:author" content="James Muguira">
+<meta property="article:tag" content="Containers">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://muguira-james.github.io/images/ContainerVsVM.png">
+
+
+<link rel="canonical" href="http://muguira-james.github.io/2017/11/28/2017-11-28-A-Why-are-containers-important/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://muguira-james.github.io/2017/11/28/2017-11-28-A-Why-are-containers-important/","path":"2017/11/28/2017-11-28-A-Why-are-containers-important/","title":"Why are containers important"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Why are containers important | My musing</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">My musing</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">A place to write and describe</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">James Muguira</p>
+  <div class="site-description" itemprop="description">I write about technology mostly</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://muguira-james.github.io/2017/11/28/2017-11-28-A-Why-are-containers-important/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="James Muguira">
+      <meta itemprop="description" content="I write about technology mostly">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My musing">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Why are containers important
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-11-28 13:27:12" itemprop="dateCreated datePublished" datetime="2017-11-28T13:27:12-05:00">2017-11-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-01-25 21:24:54" itemprop="dateModified" datetime="2022-01-25T21:24:54-05:00">2022-01-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Containers/" itemprop="url" rel="index"><span itemprop="name">Containers</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Explain micro-services and containers</p>
+<span id="more"></span>
+<p>Why all of the hype surrounding containers as a means to deliver valuable services to an enterprise customer? Reading the technologies news to date, you often stumble upon an article dealing with containers. This article will break down what containers are and why senior managers and CIO’s need to have a high-level understanding of their benefits.</p>
+<p>For years now technology companies have been selling systems that solve technology problems like relational data models, enterprise service bus systems, service oriented architecture and a long list of technology building blocks. These technology building blocks produce a disconnect between the service the organization Is striving to deliver and the components used to organize the data boundaries and data integration for the service.</p>
+<p>Traditional enterprise systems organize data boundaries at the edge of the legacy system. A relational database forces the business analyst to apply a specific set of data boundaries to the organizational data, the relational model. Data integration was between relational models. As an example, each department within the organization maintained a relational model of their data. The business analyst created processes to transform one relational model into another as a customer generated purchase transactions.</p>
+<p>Modern systems design liberally applies modularization to data boundaries and the integration points needed to deliver services. A service would be composed of modules that span departments within the organization. Data is not bounded at the department level, but at a finer grained transaction level.  Each customer transaction is broken down into sub-transactions. Each department contributes sub-transaction processing modules, which combine to deliver the service. Each module defines an event interface and a set of events it outputs.</p>
+<p>Containers are a way to organize data boundaries and integrate across organizational department boundaries. Containers package the modules that each department contributes to the data integration aspects of each customer transaction. The individual container is composed of libraries and business logic to maintain the state of the transaction. From an enterprise operations point of view, the container brings a lot of value. </p>
+<p>·     It isolates systems and enhances security,</p>
+<p>·     All software dependencies have to be resolved inside the container for enterprise software to run correctly,</p>
+<p>·     It encourages the application / system architect to create modular software,</p>
+<p>·     It encourages organizational departs to work together around data boundaries.</p>
+<p>One large advantage of containers over Virtual Machines (VMs) is that the container is lighter and uses far less system resources that a VM. The VM is composed of a complete operating system and application software. The container is composed of only the application software ( see Figure 1). Moving the operating system software outside of the container allows the container to be managed as a resource by an orchestration system, such as Kubernetes or Amazon ECS. Where the container runs, how many are run, when it runs all become an orchestration problem.</p>
+<p><img src="/images/ContainerVsVM.png" alt="ContainerVsVM.png"></p>
+<p>Figure 1. Container verses VM</p>
+<p>Our Service</p>
+<p>Let’s consider an enterprise service that delivers the day’s current news organized in different ways: as groups of news articles on a specific topic, news articles grouped by geographic region, by country, by business or other organization, and news articles organized as meta-topics (groups of the above combined). The service is composed of news trawlers, which gather and analyze news and a data base to store the final products.</p>
+<p>In our case, the trawler will be placed into a container. The data base could also be placed in a container. This article will only consider the trawler software. The trawler is composed of components that handle gathering the raw news articles and natural language processing components that extract things like topic, summary, region, person, place or organization information. These components all send organized output to the database.</p>
+<p>Containerizing the trawler presents several design problems that need to be solved:</p>
+<p>·     the trawler’s development components each have dependencies such as libraries and frameworks that have to be included,</p>
+<p>·     the trawler has a set of configuration parameters that need to be organized and maintained, and</p>
+<p>·     the trawler uses a database connection.</p>
+<p>For the trawler to be able to run correctly, all sub-components, such as libraries and frameworks have to be added to the container. Most container systems, such as Docker and rkt, provide a language that can configure a container. As a concrete example, our news trawler, which is written in python, depends on: Beautiful Soup, feedparser, and Spacey among others. To configure a container, these components all need to be installed in the container. The trawler also maintains a run-time configuration for such things as news sources to gather articles from, the level of debug logging to generate, and the access information for the database. To interoperate with container orchestration systems, such as Kubernetes or Amazon ECS, our trawler needs to be written so it can gather these configuration settings from the run-time environment setup by the orchestration system.  Container orchestration systems configure and maintain networks to connect service components together. This means that our news trawler should use the network environment created by the orchestration system to find database access information (see Figure 2).</p>
+<p><img src="/images/CreatingANewsGraph.png" alt="CreatingANewsGraph.png"></p>
+<p>Figure 2. Container composition and environment.</p>
+<p>Conclusion</p>
+<p>Legacy systems used building blocks such as relational database systems and enterprise service bus systems to organize and maintain state within a department. This design paradigm encouraged the business analyst to organize enterprise data models along department boundaries. It also encouraged the analyst to create inefficient processes that transform information as it crossed differing department data models. Containers shift the data and integration boundaries toward finer grained transactions. Each department within the organization contributes components to the transaction model to process and integrate data to provide the service. This article considers the choices a systems designer would make to move an existing application service component into a container. It exposes the container as a component in a larger enterprise level resource orchestration system. The orchestration system maintains a run-time environment. Containerizing enterprise services is a process of breaking the business processes down into smaller transactions that cross departments. Then identifying component processing that each department needs to contribute. The containerized services also need to conform to the environmental constraints of the orchestration system. This article provided a first look into the engineering path leading to cloud capable systems.</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Containers/" rel="tag"># Containers</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2015/10/15/2015-10-15-A-Design-Thinking-and-Agile-Methodologies/" rel="prev" title="Design Thinking and Agile Methodologies">
+                  <i class="fa fa-chevron-left"></i> Design Thinking and Agile Methodologies
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/11/28/2015-11-15-A-Design-thinking-through-the-cognitive-lens-of-insight-research/" rel="next" title="Design Thinking throught the cognitive lens of Insight Research">
+                  Design Thinking throught the cognitive lens of Insight Research <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">James Muguira</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
