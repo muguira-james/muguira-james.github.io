@@ -18,7 +18,9 @@ The Racket programming language is an implementation of the Scheme standard. Rac
 
 This post came about because one of the people on my team said that lisp and scheme were "no good for production, becuase you  can't put them in containers." This post will describe how to put Racket into a Docker container. In production environments, deploying software can be problematic. For example, many programming languages / solutions require loading additional components and libraries beyond the standard set that is shipped with the language. 
 
-This post assumes you have installed both Racket and Docker on your machine. I also use the command line tool dive to inspect the container contents. Dive is a great tool.
+This post assumes you have installed both Racket and Docker on your machine. I also use the command line tool dive to inspect the container contents. Dive is a great tool. last, but very important, I assume you are working on linux. I use ubuntu and this article will build using the ubuntu latest docker image.
+
+Because we are pulling a ubuntu image into the container to serve as a base image, you have to be consistent.  The Racket-lang compilation tools build for the host they run on.  In this case, I use / develop on ubuntu. You will have executable format problems if you try and work this example on a mac or on windows.
 
 # A simple case of saying hello
 
@@ -70,7 +72,8 @@ Let's take a simple approach to get something running. Then we'll improve it ove
 ```
 
 FROM ubuntu
-RUN apt update -y && apt install -y racket
+RUN apt update -y && apt install -y tzdata && apt install -y racket
+ENV TZ="America/New_York"
 WORKDIR /app
 COPY web1.rkt .
 EXPOSE 8080
@@ -78,7 +81,7 @@ CMD ["racket", "web1.rkt"]
 
 ```
 
-That Dockerfile will create the container, update ubuntu to it's latest  configuration, install Racket into the container, expose the port and run racket with the mentioned script. 
+That Dockerfile will create the container, update ubuntu to it's latest  configuration, install Racket into the container, expose the port and run racket with the mentioned script. Notice, that I had to do something with the time zone. Ubuntu does not include time zone utilities and tools in the latest docker image.
 
 Let's see this in action. The following first builds the container. The second line runs the comtainer:
 
@@ -178,6 +181,8 @@ The result is a 67MB self-contained directory that contains everything we want i
 ```
 
 FROM ubuntu
+RUN apt update -y && apt install -y tzdata
+ENV TZ="America/New_York"
 WORKDIR /app
 COPY build .
 EXPOSE 8080
