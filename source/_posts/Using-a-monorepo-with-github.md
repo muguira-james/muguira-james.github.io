@@ -10,15 +10,17 @@ Create some examples of github actions around monorepos
 
 # Introduction
 
-Recently, a co-worker was struggling with github actions.  They had a monorepo, or a single repository with a front end and back end code in it.  Many organizations would require that you create two repos: one for the front end and one for the backend.
+Recently, a co-worker was struggling with github actions.  They had a monorepo, or a single repository with front end and back end code in it.  Many organizations would require that you create two repos: one for the front end and one for the backend.
 
 There are a lot of reasons to use monorepos and many for not using them. I'm not going there. This post will show you how to get the builds going and point out a number of pit falls along the way.
 
+You can find the code for this article {% link HERE https://github.com/muguira-james/monorepo %}
+
 # Background
 
-There are MANY explainations of github monorepos on the web. However, they have the same problems: the author shows you a specific solution, which many times is very complex and the author fails to show you how they got to that specific solution. Also, there are a number of places where you have to write the action yaml file in a specific way or it does not achieve what you want.
+There are MANY explainations of github monorepos on the web. However, they have the same problems: the author shows you a specific solution, which many times is very complex and the author fails to show you how they got to that specific solution. Also, there are a number of places where you have to write the action yaml file in a specific way or it does not achieve what you want. I'm going to show the mistakes I made in arriving at this solution.
 
-Github is a very powerful code version system. It is available to everybody and so far Microsoft has maintained a free tier. A few years ago, github added "actions", which effectively make it the center piece of a complete continuous integration and continuous deployment (CI/CD) system. Actions can:
+{% link Github https://github.com %} is a very powerful code version system. It is available to everybody and so far Microsoft has maintained a free tier. A few years ago, github added "actions", which effectively make it the center piece of a complete continuous integration and continuous deployment (CI/CD) system. Actions can:
 
 * build your code
 * run tests on your code
@@ -78,7 +80,7 @@ bend.yaml fend.yaml
 
 ```
 
-In other words, we have a bend.yaml and a fend.yaml file to define what happens in those specific subdirectories. 
+In other words, we have a *.yaml file to define what happens in those specific subdirectories. 
 
 In our case, we have 2: our frontend and backend. On a push to a specific directory we need a way to have the actions code watch and drive the correct build and test code. The "on:" keyword provides a "paths:" statement. When we use the "paths:" statement we are telling github to watch for changes along those paths. Here is an example for the backend:
 
@@ -131,21 +133,23 @@ jobs:
 
 ```
 
-The snipit says: "on branch main, watch for changes in the bend sub directory". So we define a yaml file for each subdirectory we want to operate on.
+The snipit says: "on branch main, watch for changes in the bend sub directory". So we define a yaml file for each subdirectory we want to operate on. You can define many actions in a single repo. They will run in parallel.
 
 The "jobs:" statement for both fend and bend is very similar: setup ubuntu (should use a specific version here, "not LATEST"), do a checkout, do a setup of node, run "npm ci", run test and finish.
 
 The "npm ci" is similar to using "npm install". It sets a couple of environment variables which tell the test runners (mocha and Jest) they are operating in a Ci/CD environment, not the command line. The big difference is that both mocha and Jest know to stop at the end of the test instead of waiting for interactive input.
 
-We can test at this point to see if github ONLY reacts to changes in the subdirectory. 
+In our case, I used node for both the front end and the back end. You don't have to. The backend could be Racket-lang and the front end could clojurescript, for example.
 
-* 1: change the top level readme.md file. On the github site, the github actions tab should NOT show any activity.
+We can test at this point to see if github ONLY reacts to changes in the subdirectory. To see the next tests in action you should fork my repo into your own github account. To just see the github actions tab goto {% link "Github Actions" https://github.com/muguira-james/monorepo/actions %}.
+
+* 1: change the top level readme.md file and push that change back to github. On the github site, the github actions tab should NOT show any activity.
 * 2: change the readme.md inside of the bend. The github actions tab to kick off a build of JUST the bend.
 * 3: change the readme.md inside the fend. The github actions tab to kick off a build of JUST the fend.
 
 ### Pit fall #2 - why do we have that package-lock.json file?
 
-Let's delete the package-lock.json file and see what we get. You can view the results using the actions tab on the github site. To show you the results here, I downloaded the logs from the github actions run, here is a subset found toward the bottom of the log:
+Let's delete the package-lock.json file and see what happens. You can view the results using the actions tab on the github site. To show you the results here, I downloaded the logs from the github actions run, here is a subset found toward the bottom of the log:
 
 ```
 2022-03-29T19:16:42.4316265Z npm ERR! The `npm ci` command can only install with an existing package-lock.json or
@@ -159,9 +163,9 @@ Let's delete the package-lock.json file and see what we get. You can view the re
 
 ```
 
-Bottom line: the npm ci code was looking for the package-lock file. If you substitute npm install for npm ci, you will not have this problem, but your build will be a little slower. Ok, put the package-lock.json file back by using npm install and check in the new package-lock.json file to gethub.
+Bottom line: the npm ci code was looking for the package-lock file. If you substitute npm install for npm ci, you will not have this problem, but your build will be a little slower. Ok, put the package-lock.json file back by using npm install and check in the new package-lock.json file to github.
 
-This wraps up this article.  What follows is and explaination of the front and back ends. There is 1 more pit fall further down I hit as I was creating the tests.
+This wraps up this article.  The appendix is an explaination of the front and back ends. There is 1 more pit fall further down I hit as I was creating the tests.
 
 # Conculsion
 
