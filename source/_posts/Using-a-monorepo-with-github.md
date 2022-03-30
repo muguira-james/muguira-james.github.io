@@ -2,6 +2,10 @@
 title: Using_a_monorepo_with_github
 date: 2022-03-29 13:34:29
 tags:
+  - DevOps
+  - Github
+categories:
+  - Github-actions
 ---
 
 Create some examples of github actions around monorepos
