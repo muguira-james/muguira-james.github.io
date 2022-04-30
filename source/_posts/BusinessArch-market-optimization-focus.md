@@ -10,6 +10,9 @@ This post is the first in a series describing business archtecture and how to us
 
 <!-- more -->
 
+
+
+
 # Introduction - Customer Centricity
 
 Like the technical view of the world, business needs an architecture. The business architecture describes the value you provide to a customer, your key strengths, the way the customer perceives your value stream, and the cost structure for fielding that stream.
