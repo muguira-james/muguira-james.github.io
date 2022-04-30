@@ -1,5 +1,5 @@
 ---
-title: BusinessArchitecture:-market-optimization-focus
+title: BusinessArchitecture: market optimization and focus
 date: 2022-04-17 13:30:52
 tags:
  - "Business Architecture"
