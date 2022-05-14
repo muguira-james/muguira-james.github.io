@@ -6,6 +6,10 @@ tags:
 
 ---
 
+Frame the tools of business architecture in terms or time frames and utilization
+
+<!-- more -->
+
 # Introduction 
 
 A business architect uses different tools to addresses different audiences. This article will characterize both the audience and the tool. We will move from the top of the organization (i.e. the C-suite) down to individual teams. 
